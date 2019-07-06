@@ -1,2 +1,2 @@
 # Python_projects
-Will be add soon
+Will be added soon
