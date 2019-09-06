@@ -1,5 +1,3 @@
-#creator:Genady kogan 328956537 & shilat apel 205608383
-
  
 #T1
 cube=lambda x: x*x*x 
