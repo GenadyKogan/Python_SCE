@@ -1,4 +1,4 @@
-'''creator:Genady Kogan 328956537 & Shilat Apel 205608383'''
+
 from functools import reduce
 '''task 1'''
 #-----------------------------------#
