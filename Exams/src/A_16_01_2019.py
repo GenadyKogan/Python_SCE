@@ -47,36 +47,68 @@ def foo(x,y):
 
 '''Task_4'''
 
-### [Appendix: Shmython]
+
 def make_class(name,attrs, base=None):
+    #a
+    #adding name to make_class()
     def get(name):
-        if name in attrs: return attrs[name]
-        elif base:        return base['get'](name)
-    def set(name, value): attrs[name] = value
+        if name in attrs:
+            return attrs[name]
+        elif base:       
+            return base['get'](name)
+        #b
+        '''raise AttributeError('Attribute {0} is not defined for {1}'.format(name, attrs['name']))'''
+
+    def set(name, value):
+        
+        attrs[name] = value
 
     def new(*args):
         def get(name):
-            if name in attrs:       return attrs[name]
+            if name in attrs:   
+                    return attrs[name]
             else:
                 value = cls['get'](name)
-                if callable(value): return lambda *args: value(obj, *args)
-                else:               return value
-        def set(name, value):       attrs[name] = value
+                if callable(value): 
+                    return lambda *args: value(obj, *args)
+                else:          
+                        return value
+        def set(name, value):  
+                attrs[name] = value
 
         attrs = {}
         obj   = { 'get': get, 'set': set }
+        #c
+        '''
         init  = get('__init__')
         if init: init(*args)
+        '''
+        try:
+            init = get('__init__')
+            init(*args)
+        except:
+            print("A new instance of {0} cannot be initialized".format(cls['get']('name')))
+        
         return obj
-    # alef  set class name
     
-    cls = { 'get': get, 'set': set, 'new': new,'name':name }
+    
+    cls = { 'get': get, 'set': set, 'new': new,}
+    
+    # a  set class name
+        #or: set('name', name)
+        #or: attrs['name'] = name
+        #or: 
+    cls['set']('name', name)
+    
     return cls
-### [End of Shmython]
+
 def make_account_class():     
         return make_class('Account', {'interest' : 0.05}) 
 def make_save_account_class():    
         return make_class('SaveAccount', {'interest' : 0.03}, Account) 
 
 Account = make_account_class() 
-SaveAccount = make_save_account_class() 
+SaveAccount = make_save_account_class()
+'''print(Account['get']('stam'))''' 
+a = Account['new']('Jim')
+'''print(a['get']('name'))'''
