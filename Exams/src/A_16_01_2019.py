@@ -45,4 +45,38 @@ def foo(x,y):
 '''print(foo(1,2)(4))'''
 '''========================================================================================='''     
 
-  
+'''Task_4'''
+
+### [Appendix: Shmython]
+def make_class(name,attrs, base=None):
+    def get(name):
+        if name in attrs: return attrs[name]
+        elif base:        return base['get'](name)
+    def set(name, value): attrs[name] = value
+
+    def new(*args):
+        def get(name):
+            if name in attrs:       return attrs[name]
+            else:
+                value = cls['get'](name)
+                if callable(value): return lambda *args: value(obj, *args)
+                else:               return value
+        def set(name, value):       attrs[name] = value
+
+        attrs = {}
+        obj   = { 'get': get, 'set': set }
+        init  = get('__init__')
+        if init: init(*args)
+        return obj
+    # alef  set class name
+    
+    cls = { 'get': get, 'set': set, 'new': new,'name':name }
+    return cls
+### [End of Shmython]
+def make_account_class():     
+        return make_class('Account', {'interest' : 0.05}) 
+def make_save_account_class():    
+        return make_class('SaveAccount', {'interest' : 0.03}, Account) 
+
+Account = make_account_class() 
+SaveAccount = make_save_account_class() 
