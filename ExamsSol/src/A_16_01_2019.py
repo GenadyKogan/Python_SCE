@@ -22,7 +22,7 @@ def safe_merge_trees(g,*trees):
     except TypeError as err:
         print(err)
         
-t1, t2 = Tree(1), Tree(2)
+'''t1, t2 = Tree(1), Tree(2)
 print(t2.leaf)
 print(t2.binary)
 t3 = merge_trees(lambda x,y:x+y,t1,t2)
@@ -35,4 +35,15 @@ print(t3.leaf)
 print(t3.binary)
 safe_merge_trees(sum,t1,t3)
 safe_merge_trees(lambda x,y:x*y)
-safe_merge_trees(lambda x,y:x*y,t1)
+safe_merge_trees(lambda x,y:x*y,t1)'''
+        
+'''Task_3'''
+print("Task_3")
+#1
+lambda x,y:lambda z:x+y if z==1 else pow(x,y)(1,2)(3)
+def foo(x,y):
+    def goo(z):
+        return x+y if z==1 else pow(x,y)
+    return goo
+
+'''print(foo(1,2)(4))'''
