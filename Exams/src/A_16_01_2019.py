@@ -56,7 +56,7 @@ def make_class(name,attrs, base=None):
             return attrs[name]
         elif base:       
             return base['get'](name)
-        #b
+        #b:
         '''raise AttributeError('Attribute {0} is not defined for {1}'.format(name, attrs['name']))'''
 
     def set(name, value):
@@ -78,7 +78,7 @@ def make_class(name,attrs, base=None):
 
         attrs = {}
         obj   = { 'get': get, 'set': set }
-        #c
+        #c:
         '''
         init  = get('__init__')
         if init: init(*args)
@@ -94,7 +94,7 @@ def make_class(name,attrs, base=None):
     
     cls = { 'get': get, 'set': set, 'new': new,}
     
-    # a  set class name
+    # a:  set class name
         #or: set('name', name)
         #or: attrs['name'] = name
         #or: 
@@ -108,7 +108,7 @@ def make_save_account_class():
         return make_class('SaveAccount', {'interest' : 0.03}, Account) 
 
 Account = make_account_class() 
-SaveAccount = make_save_account_class()
+'''SaveAccount = make_save_account_class()'''
 '''print(Account['get']('stam'))''' 
 a = Account['new']('Jim')
 '''print(a['get']('name'))'''

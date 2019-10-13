@@ -78,3 +78,98 @@ while grades['hasNext']():
 '''grades = stats['get_course_grades']('Alg')
 for _ in range(1,6):
     print(grades['nextGrade']())'''
+    
+'''Task_4'''
+    
+### [Appendix: Shmython]
+'''def make_class(attrs, base=None):
+    def get(name):
+        if name in attrs: return attrs[name]
+        elif base:        return base['get'](name)
+    def set(name, value): attrs[name] = value
+
+    def new(*args):
+        def get(name):
+            if name in attrs:       return attrs[name]
+            else:
+                value = cls['get'](name)
+                if callable(value): return lambda *args: value(obj, *args)
+                else:               return value
+        def set(name, value):       attrs[name] = value
+
+        attrs = {}
+        obj   = { 'get': get, 'set': set }
+        init  = get('__init__')
+        if init: init(*args)
+        return obj
+
+    cls = { 'get': get, 'set': set, 'new': new }
+    return cls
+### [End of Shmython]'''
+from inspect import signature
+### [Appendix: Shmython]
+def make_class(name,attrs, base=None):
+    def get(name):
+        if name in attrs: return attrs[name]
+        elif base:        return base['get'](name)
+    def set(name, value): attrs[name] = value
+    def ancestry():
+##        if not base:    return [cls]
+##        res = base['get']('ancestry')()
+##        res.insert(0,cls)
+##        return res
+        ##OR (there are multiple alternatives):
+        res = [cls]
+        if base:
+            res.extend(base['get']('ancestry')())
+        return res
+    def new(*args):
+        def get(name):
+            if name in attrs:   
+                    return attrs[name]
+            else:
+                value = cls['get'](name)
+                if callable(value):
+                    #b:
+                    if len(signature(value).parameters)== 0:
+                        raise  TypeError('Function with no arguments cannot be bound to object')
+                    return lambda *args: value(obj, *args)
+                else:              
+                    return value
+        def set(name, value):    
+                attrs[name] = value
+
+        attrs = {}
+        obj   = { 'get': get, 'set': set }
+        init  = get('__init__')
+        if init: init(*args)
+        return obj
+
+    cls = { 'get': get, 'set': set, 'new': new }
+    # a: set class name
+    #       or: set('name', name)
+    #       or: attrs['name'] = name
+    cls['set']('name',name)
+    #c:
+    cls['set']('ancestry', ancestry)
+    return cls
+
+def make_account_class():
+    def __init__(self, owner):
+        self['set']('owner', owner)
+    return make_class('Account', { '__init__' : __init__ , 'interest' : 0.05})
+
+def make_save_account_class():
+    return make_class('SaveAccount', {'interest' : 0.03}, Account)
+
+def make_vip_account_class():
+    return make_class('VIPAccount', {'interest' : 0.01}, SaveAccount)
+
+Account = make_account_class()
+SaveAccount = make_save_account_class()
+VIPAccount = make_vip_account_class()
+anc = VIPAccount['get']('ancestry')()
+print(list(c['get']('name') for c in anc))
+# ['VIPAccount', 'SaveAccount']
+'''Jim = VIPAccount['new']('Jim')
+print(Jim['get']('ancestry')())'''
