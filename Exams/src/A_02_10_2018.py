@@ -121,13 +121,22 @@ def make_class(attrs, base=None):
         return obj
     cls = { 'get': get, 'set': set, 'new': new }
 
-
+# ------------------------------------------------
+    # bet  set Base class Count
+    #       or: set('BaseCount', count)
+    #       or: attrs['BaseCount'] = count
+    if not base: count=0
+    else:
+        count=len(base)
+    cls['set']('BaseCount', count)
+# ------------------------------------------------
+    return cls
 
 def make_classA():
     intN=2
     def strA(self):
         return 'Integer number: '+str(self['get']('intN'))+'\n'
-
+    
     return make_class(locals())
 
 def make_classB():
@@ -140,6 +149,30 @@ B = make_classB()
 def make_classC():
     def __init__(self, strN):
         self['set']('strN', strN)
+# ------------------------------------------------
+# gimel
+    def strC(self):
+        return self['get']('strA')()+self['get']('strB')()+'String: '+str(self['get']('strN'))+'\n'
+# ------------------------------------------------
+    return make_class(locals(),[A,B])
+C= make_classC()
+# ------------------------------------------------
+
+'''
+>>> c1=C['new']('test')
+>>> c1['get']('intN')
+2
+>>> c1['get']('floatN')
+3.5
+>>> C['get']('BaseCount')
+2
+>>> A['get']('BaseCount')
+0
+>>> print(c1['get']('strC')())
+Integer number: 2
+Float number: 3.5
+String: test
+'''
 
     
     
