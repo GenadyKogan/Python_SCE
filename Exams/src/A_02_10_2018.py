@@ -169,9 +169,7 @@ C= make_classC()
 >>> A['get']('BaseCount')
 0
 >>> print(c1['get']('strC')())
-Integer number: 2
-Float number: 3.5
-String: test
+
 '''
 
     
