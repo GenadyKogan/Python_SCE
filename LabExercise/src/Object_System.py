@@ -44,6 +44,12 @@ def make_class(attributes_make_class, base_class=None):
                 return attributes_make_class[name]
             elif base_class is not None:
                 return base_class['get_value_make_class'](name)
+            # inheritance from several base
+            '''elif base_class:
+                for b in base_class:
+                    x=b['get'](name)
+                if x:
+                    return x'''
         '''def set_value(name, value):'''
         def set_value_make_class(name, value):
             attributes_make_class[name] = value
