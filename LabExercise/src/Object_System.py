@@ -106,15 +106,15 @@ def make_checking_account_class():
 
 Account = make_account_class()
 
-'''jim_acct = Account['new_make_class']('Jim')
+jim_acct = Account['new_make_class']('Jim')
 
 print(jim_acct['get_value_make_instance']('interest'))
 print(jim_acct['get_value_make_instance']('deposit')(20))
-print(jim_acct['get_value_make_instance']('withdraw')(5))
+'''print(jim_acct['get_value_make_instance']('withdraw')(5))
 jim_acct['set_value_make_instance']('interest', 0.04)
 print(jim_acct['get_value_make_instance']('interest'))'''
 
-CheckingAccount = make_checking_account_class()
+'''CheckingAccount = make_checking_account_class()
 jack_acct = CheckingAccount['new_make_class']('Jack')
 print(jack_acct['get_value_make_instance']('deposit')(20))
-print(jack_acct['get_value_make_instance']('withdraw')(10))
+print(jack_acct['get_value_make_instance']('withdraw')(10))'''
