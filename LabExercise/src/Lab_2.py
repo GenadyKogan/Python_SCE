@@ -177,6 +177,3 @@ def average_passed_grade():
 # ------------------------------------------------
 #print('{0:.1f}'.format(average_passed_grade()))
 
-
-
-
