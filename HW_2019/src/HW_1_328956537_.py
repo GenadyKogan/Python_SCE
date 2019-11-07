@@ -1,5 +1,5 @@
 
-
+# task 1
 def Younger():
     nameA  = input("Enter a  name of the first person ")
     print("Enter a  birthdate of " + nameA)
@@ -22,4 +22,18 @@ def Younger():
             if dayA>dayB:print(nameA + " is younger")
             elif dayA<dayB:print(nameB + " is younger")
             else:print(nameA +" and " + nameB + " are same age")
-Younger()       
+#Younger()
+
+# task 2
+
+def ReverseNumber(num):
+    reverse = 0
+    while num!=0:
+       reverse = reverse * 10;
+       reverse = reverse + num%10;
+       num = num//10;
+    return reverse
+
+#print(ReverseNumber(13254))
+ 
+# task 3      
