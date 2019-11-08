@@ -1,6 +1,7 @@
 '''====================================================================='''
 # task 1
 from _ast import Num
+
 def Younger():
     nameA  = input('Enter a  name of the first person ')
     print('Enter a  birthdate of ' + nameA)
@@ -100,7 +101,6 @@ def Main():
 
 # task 5
 
-
 def Factorial(num):
     '''Function to calculate the factorial of any'''
     f = 1;
@@ -131,10 +131,25 @@ def Test():
             continue
         else:
             break
-        
-    
     for x in range (num+1):
         if SumOfFactorials(x):
             print(x)
    
-Test()
+#Test()
+'''=====================================================================''' 
+
+# task 6
+
+def RecPrint(begin, end, skip):
+    if begin == end:
+        print(begin)
+        return begin
+    
+    if begin<end:
+        print(begin)
+        begin = begin + skip
+        
+        return RecPrint(begin, end, skip)
+    
+
+RecPrint(53,102,10)
