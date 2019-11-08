@@ -137,19 +137,27 @@ def Test():
    
 #Test()
 '''=====================================================================''' 
-
 # task 6
 
 def RecPrint(begin, end, skip):
     if begin == end:
         print(begin)
         return begin
-    
     if begin<end:
         print(begin)
-        begin = begin + skip
-        
-        return RecPrint(begin, end, skip)
+        return RecPrint(begin+skip, end, skip)
     
 
-RecPrint(53,102,10)
+#RecPrint(53,102,10)
+'''=====================================================================''' 
+
+# task 7
+def Repeat(digit, lenght):
+    if digit ==0:
+        print(digit)
+        return digit
+    if digit>0 and lenght>0:
+        print(digit)
+        Repeat(digit, lenght-1)
+    
+Repeat(1,4)
