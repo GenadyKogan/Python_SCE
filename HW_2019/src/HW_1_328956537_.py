@@ -123,18 +123,18 @@ def SumOfFactorials(num):
 
 
 def Test():
-    print('Enter positive integer number: ')
+    print('Enter positive integer number for range: ')
     while True:
         num = int(input())
         if num < 0:
-            print('Wrong number.Enter integer number: ')
+            print('Wrong number.Enter integer number for range: ')
             continue
         else:
             break
         
-    if SumOfFactorials(num):
-        print("Yes")
-    else:
-        print("No")
+    
+    for x in range (num+1):
+        if SumOfFactorials(x):
+            print(x)
    
 Test()
