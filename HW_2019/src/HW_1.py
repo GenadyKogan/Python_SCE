@@ -53,6 +53,16 @@ def SortedDigits(num):
 # task 4
 
 def PrintFigure(num):
+    
+    if num < 0 or num %2 ==0:
+       while True:
+       
+            if num < 0 or num %2 ==0:
+                print('Wrong number.Enter positive and not even number: ')
+                num = int(input())
+                continue
+            else:
+                break
     """
     chr(47) = /
     chr(92) = \
@@ -84,17 +94,17 @@ def PrintFigure(num):
         print()
                    
 
-def Main():
-    print('Enter positive and not even number: ')
-    while True:
-        num = int(input())
-        if num < 0 or num %2 ==0:
-            print('Wrong number.Enter positive and not even number: ')
-            continue
-        else:
-            break
+#def Main():
+    #print('Enter positive and not even number: ')
+    #while True:
+        #num = int(input())
+        #if num < 0 or num %2 ==0:
+            #print('Wrong number.Enter positive and not even number: ')
+            #continue
+        #else:
+            #break
     
-    PrintFigure(num)
+PrintFigure(8)
 
 #Main()
 '''=====================================================================''' 
