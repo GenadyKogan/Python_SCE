@@ -55,8 +55,7 @@ def SortedDigits(num):
 def PrintFigure(num):
     
     if num < 0 or num %2 ==0:
-       while True:
-       
+        while True:
             if num < 0 or num %2 ==0:
                 print('Wrong number.Enter positive and not even number: ')
                 num = int(input())
