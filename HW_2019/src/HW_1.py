@@ -46,7 +46,7 @@ def SortedDigits(num):
         previous = digit
         num//= 10;
     return True
-#print(SortedDigits (46789 ))
+print(SortedDigits (7))
 #print(SortedDigits (46719))
 '''====================================================================='''
 
@@ -103,7 +103,7 @@ def PrintFigure(num):
         #else:
             #break
     
-PrintFigure(8)
+#PrintFigure(8)
 
 #Main()
 '''=====================================================================''' 
@@ -170,3 +170,5 @@ def Repeat(digit, lenght):
         Repeat(digit, lenght-1)
     
 #Repeat(1,4)
+
+
