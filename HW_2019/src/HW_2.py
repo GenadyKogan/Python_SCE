@@ -3,9 +3,6 @@ def Make_iterator(fn):
     x=0
     def foo(): 
         nonlocal x 
-        '''for _ in range(x):
-            
-            print("res", x)'''
         res = fn(x)
         x+=1
         return res
