@@ -84,9 +84,6 @@ def  listFilterMulti(list, fList):
 #print(listFilter([2,4,5,6,7,13],isPrime))
 #print(listFilter([2,4,5,6,7,13],isFib))
 # task 6
-
-
-
 from math import sqrt
 def approx_eq(x, y, tolerance=1.0e-20):
         return abs(x - y) >= tolerance
@@ -103,5 +100,5 @@ def Fixed_point(f,init):
     return x
 
 
-print(Fixed_point(lambda x: sqrt(x), 4))        
+#print(Fixed_point(lambda x: sqrt(x), 4))        
 #print(Fixed_point(lambda x: x**2, 4))
