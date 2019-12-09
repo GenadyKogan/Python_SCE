@@ -103,6 +103,7 @@ def  listFilterMulti(list, fList):
 from math import sqrt
 def approx_eq(x, y, tolerance=1.0e-20):
         return abs(x - y) >= tolerance
+
     
 def Fixed_point(f,init):
     '''A fixed point (sometimes shortened to fixpoint,
@@ -112,15 +113,14 @@ def Fixed_point(f,init):
     Uusing the "iterative enhancement" method
     A function return a Sabbath point'''
     y,x=init,f(init)
-    for _ in range(50):
+    for _ in range(52):
         if approx_eq(x,y):
             if x>y:
-                return None
+                return
             y=f(y)
             x=f(y)
-            #print("x ---> ",x)
     return x
 
 
-#print(Fixed_point(lambda x: sqrt(x), 4))        
-#print(Fixed_point(lambda x: x**2, 4))
+print(Fixed_point(lambda x: sqrt(x), 4))        
+print(Fixed_point(lambda x: x**2, 4))
