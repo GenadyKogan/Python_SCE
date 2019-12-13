@@ -36,7 +36,7 @@ print(abs_complex(c))
 # ------------------------------------------------
 #       Q2(ADT Complex Number - dispatch)
 # ------------------------------------------------
-'''
+
 def make_complex(a,b):
     def dispatch(x):
         if x==0:
@@ -64,13 +64,13 @@ def abs_complex(c):
     return sqrt(real(c)**2+imag(c)**2)    
 # ------------------------------------------------
 c=make_complex(2,3)
-print(c)
-print(real(c))
-print(imag(c))
-print(str_complex(c))
-print(str_complex(add_complex(c,c)))
-print(abs_complex(c))
-'''
+#print("c -->",c(1))
+#print(real(c))
+#print(imag(c))
+#print(str_complex(c))
+#print(str_complex(add_complex(c,c)))
+#print(abs_complex(c))
+#print(str_complex(add_complex(c,c)))
 
 # ------------------------------------------------
 #       Q3(ADT rlist - tuple)
