@@ -1,9 +1,9 @@
 
-#===============================================
+#===============================================#
 
                 # task 1
 
-#===============================================
+#===============================================#
 
 def make_power(x,y):
     def dispatch(i):
@@ -11,13 +11,13 @@ def make_power(x,y):
         elif i==1:return y
         return 0
     return dispatch
-#===============================================
+#===============================================#
 def getitePower(p,i):return p(i)
-#===============================================
+#===============================================#
 def base(x):return getitePower(x,0)
-#===============================================
+#===============================================#
 def power(x):return getitePower(x,1)
-#===============================================
+#===============================================#
 def print_power(x):
     if power(x)>0 and power(x)<1:
         return x
@@ -25,10 +25,10 @@ def print_power(x):
     if power(x)==2:print('{0}'.format(base(x)*base(x)) ) 
     #return '{0}{1}{2}'.format(base(x),(lambda x:'^' if x>=0 else '^')(power(x)),power(x))
     print('{0}{1}{2}'.format(base(x),'^',power(x)))  
-#===============================================
+#===============================================#
 def improve_power(x):
     return make_power(returnBase(base(x)), amountOfPower(base(x))*power(x))
-#===============================================
+#===============================================#
 import math
 def power_function(decimal, integer):
     num=1
@@ -41,7 +41,7 @@ def power_function(decimal, integer):
             num=num/decimal
     return num
 
-#===============================================
+#===============================================#
 def amountOfPower(n) : 
     if (n==1):return 1
     # Try all numbers from 2 to sqrt(n) as base 
@@ -55,7 +55,7 @@ def amountOfPower(n) :
             y=y + 1
             p=power_function(x,y) 
     return 1
-#===============================================
+#===============================================#
 def returnBase(n) : 
     if (n==1):return True
     # Try all numbers from 2 to sqrt(n) as base 
@@ -70,7 +70,7 @@ def returnBase(n) :
             p=power_function(x,y) 
     return 1
 
-#===============================================
+#===============================================#
 def isPower(n) : 
     if (n==1)  : 
         return True
@@ -87,7 +87,7 @@ def isPower(n) :
             p = math.pow(x, y) 
     return False
 #print(isPower(19683))
-#===============================================
+#===============================================#
 def mul_power(x,y):
     a=power_function(base(x),power(x))
     b=power_function(base(y),power(y))
@@ -97,7 +97,7 @@ def mul_power(x,y):
     #return res
     return make_power(returnBase(res), amountOfPower(res))
 
-#===============================================
+#===============================================#
 def div_power(x,y):
     a=power_function(base(x),power(x))
     b=power_function(base(y),power(y))
@@ -109,7 +109,7 @@ def div_power(x,y):
     #if res>0 and res<1:
         #return print_power(res)
     return make_power(returnBase(res), amountOfPower(res))
-#===============================================
+#===============================================#
 
 #x= make_power(4,5)
 
@@ -128,51 +128,76 @@ def div_power(x,y):
 #print(print_power(make_power(12,1))) 
 #print(print_power(make_power(12,0))) 
 
-#===============================================
+#===============================================#
 
                 # task 2
 
-#===============================================
+#===============================================#
 
 def make_tree(value,left,right):
+    ''' doc tar 2'''
     def dispatch(message):
-        if message=='value':return value
-        if message=='right_node':return right
-        if message=='left_node':return left
+        if message == 'value':
+            return value
+        elif message == 'left_node':
+            return left
+        elif message == 'right_node':
+            return right
+        
     return dispatch
-#===============================================
-def getitem_node(f,i):return f(i)
-#===============================================
+#===============================================# 
+def getitem_node(f,i):
+    return f(i)
+#===============================================# 
 def right(node):
-    #print(node)
     return getitem_node(node, 'right_node')
-#===============================================
+#===============================================#
 def left(node):
     return  getitem_node(node,'left_node')
-#===============================================
+#===============================================#
 def value(node):
     return getitem_node(node, 'value')
     #return node("value")
-#===============================================
+#===============================================#
 def print_tree(tree):
     if tree!=None:
         print_tree(left(tree))
         print(value(tree),end=" ")
         print_tree(right(tree))
-        
-#===============================================
+#===============================================#
 def count_value(tree,val):
     if tree==None:
         return 0
     if value(tree)==val:
         return 1+count_value(left(tree),val)+ count_value(right(tree),val)
     return 0+count_value(left(tree),val)+ count_value(right(tree),val)
-    
+#===============================================#
+def tree_BST(tree):
+  
+    if tree==None:return True  
+    elif left(tree) != None:
+            return value(tree)>value(left(tree)) and tree_BST(left(tree))
+    elif left(tree) != None:
+            return value(tree)<value(right(tree)) and tree_BST(right(tree))
+    return tree_BST(left(tree)) and tree_BST(right(tree))
+#===============================================#
+def  tree_depth(tree): 
+    if tree==None:return -1
+    else:         
+        lDepth=tree_depth(left(tree))
+        rDepth=tree_depth(right(tree))
+        if(lDepth>rDepth):return lDepth+1
+        else:return rDepth+1
+#===============================================#      
+
 
     
-tree1=make_tree(12,   make_tree(6,make_tree(8,None,None),None),     make_tree(7,make_tree(8,None,None),make_tree(15,None,None) ) )
-#tree2=make_tree(12,make_tree(6,make_tree(3,make_tree(1,None,None),None),make_tree(8,make_tree(7,None,None),None)),make_tree(15,None,make_tree(20,make_tree(17,None, None),None))) 
+tree1=make_tree(12,   make_tree(6,make_tree(8,None,None),None),     make_tree(7, make_tree(8,None,None), make_tree(15,None,None) ) )
+tree2=make_tree(12,      make_tree(6,make_tree(3,make_tree(1,None,None),None), make_tree(8,make_tree(7,None,None),None)),     make_tree(15,None,make_tree(20,make_tree(17,None, None),None))) 
+tree3=make_tree(12,make_tree(17,None,None),make_tree(8,None,None))
 #print_tree(tree1)
-#print_tree(tree1) 
-#print(value(left((tree1)))) 
-print(count_value(tree1,12))
+#print_tree(tree3) 
+#print(value(left(right(left((tree2)))))) 
+#print(count_value(tree1,8))
+#print(tree_BST(tree1))
+print(tree_depth(tree2))
