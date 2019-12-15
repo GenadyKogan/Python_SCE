@@ -9,7 +9,6 @@ def make_power(x,y):
     def dispatch(i):
         if i==0:return x
         elif i==1:return y
-        return 0
     return dispatch
 #===============================================#
 def getitePower(p,i):return p(i)
@@ -19,15 +18,13 @@ def base(x):return getitePower(x,0)
 def power(x):return getitePower(x,1)
 #===============================================#
 def print_power(x):
-    if power(x)>0 and power(x)<1:
-        return x
+    if power(x)>0 and power(x)<1: return x
     if power(x)==0 or power(x)==1:print('{0}'.format(base(x)) )    
     if power(x)==2:print('{0}'.format(base(x)*base(x)) ) 
     #return '{0}{1}{2}'.format(base(x),(lambda x:'^' if x>=0 else '^')(power(x)),power(x))
     print('{0}{1}{2}'.format(base(x),'^',power(x)))  
 #===============================================#
-def improve_power(x):
-    return make_power(returnBase(base(x)), amountOfPower(base(x))*power(x))
+def improve_power(x):return make_power(returnBase(base(x)), amountOfPower(base(x))*power(x))
 #===============================================#
 import math
 def power_function(decimal, integer):
@@ -135,28 +132,19 @@ def div_power(x,y):
 #===============================================#
 
 def make_tree(value,left,right):
-    ''' doc tar 2'''
     def dispatch(message):
-        if message == 'value':
-            return value
-        elif message == 'left_node':
-            return left
-        elif message == 'right_node':
-            return right
-        
+        if message == 'value':return value
+        elif message == 'left_node':return left
+        elif message == 'right_node':return right
     return dispatch
 #===============================================# 
-def getitem_node(f,i):
-    return f(i)
+def getitem_node(f,i):return f(i)
 #===============================================# 
-def right(node):
-    return getitem_node(node, 'right_node')
+def right(node):return getitem_node(node, 'right_node')
 #===============================================#
-def left(node):
-    return  getitem_node(node,'left_node')
+def left(node):return  getitem_node(node,'left_node')
 #===============================================#
-def value(node):
-    return getitem_node(node, 'value')
+def value(node):return getitem_node(node, 'value')
     #return node("value")
 #===============================================#
 def print_tree(tree):
@@ -166,19 +154,15 @@ def print_tree(tree):
         print_tree(right(tree))
 #===============================================#
 def count_value(tree,val):
-    if tree==None:
-        return 0
-    if value(tree)==val:
-        return 1+count_value(left(tree),val)+ count_value(right(tree),val)
+    if tree==None:return 0
+    if value(tree)==val:return 1+count_value(left(tree),val)+ count_value(right(tree),val)
     return 0+count_value(left(tree),val)+ count_value(right(tree),val)
 #===============================================#
 def tree_BST(tree):
   
     if tree==None:return True  
-    elif left(tree) != None:
-            return value(tree)>value(left(tree)) and tree_BST(left(tree))
-    elif left(tree) != None:
-            return value(tree)<value(right(tree)) and tree_BST(right(tree))
+    elif left(tree) != None:return value(tree)>value(left(tree)) and tree_BST(left(tree))
+    elif left(tree) != None:return value(tree)<value(right(tree)) and tree_BST(right(tree))
     return tree_BST(left(tree)) and tree_BST(right(tree))
 #===============================================#
 def  tree_depth(tree): 
@@ -189,8 +173,13 @@ def  tree_depth(tree):
         if(lDepth>rDepth):return lDepth+1
         else:return rDepth+1
 #===============================================#      
-
-
+def tree_balanced(tree):
+    if tree==None:return True
+    lh=tree_depth(left(tree))
+    rh=tree_depth(right(tree))
+    if (abs(lh - rh) <= 1) and tree_balanced(left(tree)) is True and tree_balanced(right(tree)) is True:return True
+    return False
+#===============================================#
     
 tree1=make_tree(12,   make_tree(6,make_tree(8,None,None),None),     make_tree(7, make_tree(8,None,None), make_tree(15,None,None) ) )
 tree2=make_tree(12,      make_tree(6,make_tree(3,make_tree(1,None,None),None), make_tree(8,make_tree(7,None,None),None)),     make_tree(15,None,make_tree(20,make_tree(17,None, None),None))) 
@@ -200,4 +189,5 @@ tree3=make_tree(12,make_tree(17,None,None),make_tree(8,None,None))
 #print(value(left(right(left((tree2)))))) 
 #print(count_value(tree1,8))
 #print(tree_BST(tree1))
-print(tree_depth(tree2))
+#print(tree_depth(tree2))
+print(tree_balanced(tree2))
