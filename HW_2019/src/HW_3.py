@@ -1,3 +1,4 @@
+from itertools import product
 
 #===============================================#
 
@@ -181,13 +182,117 @@ def tree_balanced(tree):
     return False
 #===============================================#
     
-tree1=make_tree(12,   make_tree(6,make_tree(8,None,None),None),     make_tree(7, make_tree(8,None,None), make_tree(15,None,None) ) )
-tree2=make_tree(12,      make_tree(6,make_tree(3,make_tree(1,None,None),None), make_tree(8,make_tree(7,None,None),None)),     make_tree(15,None,make_tree(20,make_tree(17,None, None),None))) 
-tree3=make_tree(12,make_tree(17,None,None),make_tree(8,None,None))
+#tree1=make_tree(12,   make_tree(6,make_tree(8,None,None),None),     make_tree(7, make_tree(8,None,None), make_tree(15,None,None) ) )
+#tree2=make_tree(12,      make_tree(6,make_tree(3,make_tree(1,None,None),None), make_tree(8,make_tree(7,None,None),None)),     make_tree(15,None,make_tree(20,make_tree(17,None, None),None))) 
+#tree3=make_tree(12,make_tree(17,None,None),make_tree(8,None,None))
 #print_tree(tree1)
 #print_tree(tree3) 
 #print(value(left(right(left((tree2)))))) 
 #print(count_value(tree1,8))
 #print(tree_BST(tree1))
 #print(tree_depth(tree2))
-print(tree_balanced(tree2))
+#print(tree_balanced(tree2))
+
+#===============================================#
+
+                # task 3
+
+#===============================================#
+from functools import reduce
+def get_prices(nameOfStore,products,sales):
+    #res3=list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))
+    #return tuple(map(lambda x: (x[0],x[1]-x[1]*res3[0]), products))
+    return tuple(map(lambda x: (x[0],x[1]-x[1]*list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))[0]), products))
+#===============================================#
+def get_prices_dict(nameOfStore,products,sales):
+    return dict(zip(products.keys(), list(map(lambda x: x-x*sales[nameOfStore], products.values()))))
+    
+    
+#===============================================#
+def get_prices_by_type(nameOfStore,prod_dict,sale_dict,types):
+    #print("prod_dict-->",prod_dict)
+    #print(sales[nameOfStore])
+    res=sales[nameOfStore]
+    
+    return res
+    #return tuple(map(lambda x: (x[0],x[1]-x[1]*list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))[0]), products))
+
+products = (('p1',1000),('p2',2000),('p3',5000),('p4',100)) 
+#sales = (('s1',0.2),('s2',0.3),('s3',0.1))
+#print(get_prices_dict('s1', products, sales)) 
+prod_dict = dict(products) 
+#sale_dict = dict(sales)
+sales = {'s1':{'t1':0.2, 't2':0.1}, 's2':{'t1':0.1, 't2':0.2},'s3':{'t1':0.3, 't2':0.5}}
+types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}  
+#print(get_prices_dict('s1', prod_dict, sale_dict))
+#print(get_prices_by_type('s1', prod_dict, sales, types))
+
+
+#===============================================#
+
+                # task 5
+
+#===============================================#
+def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
+    
+    listOfParking=[]
+    
+  
+    def print_list():
+        print(listOfParking)
+        def end():
+            
+            return 1
+            
+        def next():
+           
+            return 1
+        return {"end":end,'next':next}
+    def print_parking():
+        
+        
+        return
+#=========================================    
+    def next_time():
+        for item in listOfParking:
+            item[2]+=1   
+#=========================================    
+    def start_parking(key,value):
+        nonlocal numRegPla
+        nonlocal numPriorPla
+        nonlocal numVIPPla
+        if value=='Regular':numRegPla-=1
+        if value=='Priority':numPriorPla-=1
+        if value=='VIP':numVIPPla-=1
+        for item in listOfParking:    
+            if item[0]==key:
+                item[1]=value
+                item[2]=0
+                return
+        if numRegPla<=-1:return print('{0}{1}'.format('Regular ' ,'parking is full')) 
+        if numPriorPla<=-1:return print('{0}{1}'.format('Priority ' ,'parking is full') )
+        if numVIPPla<=0: return print('{0}{1}'.format('VIP ' ,'parking is full'))
+        listOfParking.append([key, value,0])
+        
+       
+    def end_parking(numOfCar):
+        nonlocal listOfParking
+        for item in listOfParking:
+            if item[0]==numOfCar: listOfParking = [i for i in listOfParking if i[0] != numOfCar] 
+            
+    return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
+
+park1=parking(10,3,3,3) 
+
+park1['start_parking'](222,'Regular') 
+park1['start_parking'](224,'Regular')
+park1['start_parking'](226,'Regular')
+park1['end_parking'](224)
+
+park1['next_time']()
+prn=park1['print_list']() 
+
+
+
+
+

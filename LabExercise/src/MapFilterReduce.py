@@ -6,8 +6,9 @@ for i in items:
     squared.append(i**2)
     
 items = [1, 2, 3, 4, 5]
-squared = list(map(lambda x: x**2, items))
-#print(squared) 
+y=2
+squared = list(map(lambda x: x**y, items))
+print(squared) 
             #FILTER
 number_list = range(-5, 6)
 less_than_zero = list(filter(lambda x: x <0, number_list))
