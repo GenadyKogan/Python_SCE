@@ -227,6 +227,11 @@ types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}
 #print(get_prices_dict('s1', prod_dict, sale_dict))
 #print(get_prices_by_type('s1', prod_dict, sales, types))
 
+#===============================================#
+
+                # task 4
+
+#===============================================#
 
 #===============================================#
 
@@ -234,29 +239,31 @@ types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}
 
 #===============================================#
 def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
-    
     listOfParking=[]
-    
-  
+#===============================================#
     def print_list():
-        print(listOfParking)
+        i = len(listOfParking)-1
         def end():
-            
-            return 1
-            
+            if i>0:
+                return False
+            else:
+                return True
         def next():
-           
-            return 1
+            nonlocal i
+            for item in listOfParking:
+                print('{0}{1}{2}{3}{4}{5}'.format('car: ', item[0]  ,', parking type: ', item[1], ', parking time: ', item[2]))
+                i=i-1
         return {"end":end,'next':next}
-    def print_parking():
-        
-        
-        return
-#=========================================    
+#===============================================#
+    def print_parking(key):
+        for item in listOfParking:    
+            if item[1]==key:
+                print('{0}{1}{2}{3}'.format('car: ', item[0], ', parking time: ', item[2]))
+#===============================================#
     def next_time():
         for item in listOfParking:
             item[2]+=1   
-#=========================================    
+#===============================================#
     def start_parking(key,value):
         nonlocal numRegPla
         nonlocal numPriorPla
@@ -273,25 +280,32 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
         if numPriorPla<=-1:return print('{0}{1}'.format('Priority ' ,'parking is full') )
         if numVIPPla<=0: return print('{0}{1}'.format('VIP ' ,'parking is full'))
         listOfParking.append([key, value,0])
-        
-       
+#===============================================#
     def end_parking(numOfCar):
         nonlocal listOfParking
+        paying=0
         for item in listOfParking:
-            if item[0]==numOfCar: listOfParking = [i for i in listOfParking if i[0] != numOfCar] 
+            if item[0]==numOfCar: 
+                paying = item[2]*payForHour
+                print('{0}{1}{2}{3}{4}{5}{6}{7}'.format('car: ', item[0]  ,', parking type: ', item[1], ', parking time: ', item[2], ', payment: ', paying))
+                listOfParking = [i for i in listOfParking if i[0] != numOfCar]
+                
+                return 
             
     return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
 
 park1=parking(10,3,3,3) 
 
 park1['start_parking'](222,'Regular') 
-park1['start_parking'](224,'Regular')
-park1['start_parking'](226,'Regular')
-park1['end_parking'](224)
-
-park1['next_time']()
-prn=park1['print_list']() 
-
+park1['start_parking'](223,'Regular') 
+park1['start_parking'](224,'Regular') 
+prn=park1['print_list']()
+while not prn['end'](): 
+    prn['next']()
+#park1['next_time']()
+#park1['end_parking'](224)
+#prn=park1['print_list']() 
+#park1['print_parking']('Regular')
 
 
 
