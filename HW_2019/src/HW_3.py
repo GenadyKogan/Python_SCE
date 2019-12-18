@@ -264,9 +264,7 @@ def coding():
         # Create the new shifted dict
         shifted = {
         list_dic[x][0]: list_dic[ (x + step[0]) % dic_len ][1]
-        for x in range(dic_len)
-        }
-        
+        for x in range(dic_len) }
         'set key'
         if step[1]=='yes': newKey['reverse_word']=True
         else: key['reverse_word'] =False
@@ -277,40 +275,36 @@ def coding():
         return 'done'
     def encoding(sentence):
         'replacing letters'
-       
         encoding_dict ={k: v for k, v in newKey.items() if k not in key}
         sentence = ''.join([encoding_dict.get(i, i) for i in sentence])
-        #print("str first-->",str)
-        #print("key---> ",encoding_dict)
+        return sentence
+    def decoding(sentence):
+        encoding_dict ={k: v for k, v in newKey.items() if k not in key}
+        decoding_dict2 = dict((y,x) for x,y in encoding_dict.items())
+        sentence = ''.join([decoding_dict2.get(i, i) for i in sentence])
         return sentence
     def empty_key():
         nonlocal newKey
         newKey={k: v for k, v in key.items() if k not in newKey.items()}
-       
         return 'done'
-
     def export_key():
-        print("sdfsf-->",newKey['reverse_word'])
-        return newKey 
-
-    def dispatch(message,args1=None):
-        if message=='set_key':return set_key(args1)
-        if message=='encoding':return encoding(args1)
+        if newKey['reverse_word'] is 'None' or newKey['reverse_string']==None:return 'key empty'
+        else: return newKey
+    def import_key(sendKey):
+        return 
+        
+    def dispatch(message,args=None):
+        if message=='set_key':return set_key(args)
+        if message=='encoding':return encoding(args)
         if message=='empty_key':return empty_key()
+        if message=='import_key':return import_key(args)
         if message=='export_key':return export_key()
+        if message=='decoding':return decoding(args)
     return dispatch
 code1=coding() 
 code1('set_key',(-3,'yes','yes'))
-cstr=code1('encoding','the london is the capital of great britain')
-
-code1('export_key')
-#print(key) 
-#print(code1('empty_key')) 
-#
-#print(key) 
-#key=code1('export_key') 
-#print(key)
-
+key=code1('export_key')
+print(key) 
 
 #=====================================================
 #=====================================================
