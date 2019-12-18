@@ -224,14 +224,14 @@ def get_prices_by_type(shopName,prod_dict,sales_gimel,types):
                       (x,prod_dict[x]-prod_dict[x]*calculationTuple[1][0]) ,prod_dict))
     return result
 # -------------------------------------------------------------------------------------------------------------
-print(get_prices_by_type('s1', prod_dict, sales_gimel, types))
+#print(get_prices_by_type('s1', prod_dict, sales_gimel, types))
 # -------------------------------------------------------------------------------------------------------------
-def get_prices_by_type(nameOfStore,prod_dict,sale_dict,types):
+#def get_prices_by_type(nameOfStore,prod_dict,sale_dict,types):
     #print("prod_dict-->",prod_dict)
     #print(sales[nameOfStore])
-    res=sales[nameOfStore]
+    #res=sales[nameOfStore]
     
-    return res
+    #return res
     #return tuple(map(lambda x: (x[0],x[1]-x[1]*list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))[0]), products))
 
 products = (('p1',1000),('p2',2000),('p3',5000),('p4',100)) 
