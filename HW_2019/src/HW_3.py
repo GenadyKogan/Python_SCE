@@ -1,4 +1,4 @@
-from itertools import product
+
 
 #===============================================#
 
@@ -232,6 +232,111 @@ types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}
                 # task 4
 
 #===============================================#
+def coding():
+    key={'reverse_word':'no','reverse_string':'no'}
+    newKey={}
+    alphabet={'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z'}
+    def set_key(step):
+        nonlocal newKey
+        'shifting alphabet'
+        dic_len = len(alphabet)
+        # Reduce the shift to the dic length
+        #shift = shift % dic_len
+        # convert the dict to a tupple to reference by index
+        list_dic = [(k,v) for k, v in alphabet.items()]
+        # Create the new shifted dict
+        shifted = {
+        list_dic[x][0]: list_dic[ (x + step[0]) % dic_len ][1]
+        for x in range(dic_len)
+        }
+        
+        'set key'
+        if step[1]=='yes': key['reverse_word']=True
+        else: key['reverse_word'] =False
+        if step[2]=='yes': key['reverse_string']=True
+        else: key['reverse_string'] =False
+        newKey.update(key)
+        newKey.update(shifted)
+        return 'done'
+    def encoding(str):
+        'replacing letters'
+        
+        encoding_dict ={k: v for k, v in newKey.items() if k not in key}
+        str = ''.join([encoding_dict.get(i, i) for i in str])
+        #print("str first-->",str)
+        
+        return str
+    def empty_key():
+        
+        return 
+
+    def export_key(): 
+        return key 
+
+    def dispatch(message,args1=None):
+        if message=='set_key':return set_key(args1)
+        if message=='encoding':return encoding(args1)
+        if message=='empty_key':return empty_key()
+        if message=='export_key':return export_key()
+    return dispatch
+code1=coding() 
+code1('set_key',(-3,'yes','yes'))
+cstr=code1('encoding','the london is the capital of great britain')
+print(cstr) 
+#key=code1('export_key') 
+#print(key)
+
+
+#=====================================================
+#=====================================================
+#=====================================================
+
+
+
+def reverse(sentence):
+    answer = ''
+    temp = ''
+    for char in sentence:
+        if char != ' ':
+            temp += char
+            continue
+        rev = ''
+        for i in range(len(temp)):
+            rev += temp[len(temp)-i-1]
+        answer += rev + ' '
+        temp = ''
+    return answer + temp
+reverse("This is a string to try")
+
+
+
+dic = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z'}
+dica ={'a': 'x', 'b': 'y', 'c': 'z', 'd': 'a', 'e': 'b', 'f': 'c', 'g': 'd', 'h': 'e', 'i': 'f', 'j': 'g', 'k': 'h', 'l': 'i', 'm': 'j', 'n': 'k', 'o': 'l', 'p': 'm', 'q': 'n', 'r': 'o', 's': 'p', 't': 'q', 'u': 'r', 'v': 's', 'w': 't', 'x': 'u', 'y': 'v', 'z': 'w'}
+str='the london is the capital of great britain'
+def replace_values_in_string(text, args_dict):
+    for key in args_dict.keys():
+        text = text.replace(key, (args_dict[key]))
+    return text
+
+
+#print(dic)
+#print(shift_dict(dic, -1))
+d1 = {1: 1, 2: 2}
+d2 = {3: 'ha!', 4: 3}
+d1.update(d2)
+res={**d1,**d2}
+
+
+parent_dict = {"a" : "aaa", "b" : "bbb", "c" : "ccc", "d" : "ddd", "e": "eee"}
+derived_dict = {"a" : "aaa", "d" : "ddd", "e" : "eee"}
+parent_dict ={k: v for k, v in parent_dict.items() if k  in derived_dict}
+
+
+#=====================================================
+#=====================================================
+#=====================================================
+
+
 
 #===============================================#
 
@@ -294,14 +399,14 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
             
     return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
 
-park1=parking(10,3,3,3) 
+#park1=parking(10,3,3,3) 
 
-park1['start_parking'](222,'Regular') 
-park1['start_parking'](223,'Regular') 
-park1['start_parking'](224,'Regular') 
-prn=park1['print_list']()
-while not prn['end'](): 
-    prn['next']()
+#park1['start_parking'](222,'Regular') 
+#park1['start_parking'](223,'Regular') 
+#park1['start_parking'](224,'Regular') 
+#prn=park1['print_list']()
+#while not prn['end'](): 
+    #prn['next']()
 #park1['next_time']()
 #park1['end_parking'](224)
 #prn=park1['print_list']() 
