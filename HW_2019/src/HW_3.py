@@ -1,4 +1,4 @@
-from test.test_tools.test_unparse import nonlocal_ex
+
 
 
 #===============================================#
@@ -211,38 +211,35 @@ def get_prices_dict(nameOfStore,products,sales):
     
 #===============================================#
 
-# ----------------------------version of ViktorTheGreat--------------------------------------------------------
+
 sales_gimel = {'s1':{'t1':0.2, 't2':0.1}, 's2':{'t1':0.1, 't2':0.2},'s3':{'t1':0.3, 't2':0.5}}
 types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}
 def get_prices_by_type(shopName,prod_dict,sales_gimel,types):
     #the types of discount in the given shop
     discountTypes = sales_gimel[shopName]
+   
     #lets create a calculationTuple:(discount,products_tuple) 
     calculationTuple = tuple(map(lambda x:(discountTypes[x],types[x]) if x in discountTypes else print('Wrong data'),types))
+    
+    
     #use the calculation tuple to apply each discount to the proper type
     result = dict(map(lambda x:(x,prod_dict[x]-prod_dict[x]*calculationTuple[0][0]) if x in calculationTuple[0][1] else
                       (x,prod_dict[x]-prod_dict[x]*calculationTuple[1][0]) ,prod_dict))
     return result
-# -------------------------------------------------------------------------------------------------------------
-#print(get_prices_by_type('s1', prod_dict, sales_gimel, types))
-# -------------------------------------------------------------------------------------------------------------
-#def get_prices_by_type(nameOfStore,prod_dict,sale_dict,types):
-    #print("prod_dict-->",prod_dict)
-    #print(sales[nameOfStore])
-    #res=sales[nameOfStore]
-    
-    #return res
-    #return tuple(map(lambda x: (x[0],x[1]-x[1]*list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))[0]), products))
 
-products = (('p1',1000),('p2',2000),('p3',5000),('p4',100)) 
+
+
+products = (('p1',1000),('p2',2000),('p3',5000),('p4',100))
 #sales = (('s1',0.2),('s2',0.3),('s3',0.1))
 #print(get_prices_dict('s1', products, sales)) 
 prod_dict = dict(products) 
+
 #sale_dict = dict(sales)
 sales = {'s1':{'t1':0.2, 't2':0.1}, 's2':{'t1':0.1, 't2':0.2},'s3':{'t1':0.3, 't2':0.5}}
 types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}  
 #print(get_prices_dict('s1', prod_dict, sale_dict))
-#print(get_prices_by_type('s1', prod_dict, sales, types))
+
+print(get_prices_by_type('s1', prod_dict, sales, types))
 
 #===============================================#
 
@@ -331,7 +328,7 @@ code1('set_key',(-3,'yes','yes'))
 key=code1('export_key')
 #print(key)
 cstr=code1('encoding','the london is the capital of great britain') 
-print(cstr)
+#print(cstr)
 dstr=code1('decoding',cstr) 
 #print(dstr)
 code2=coding()
@@ -339,7 +336,7 @@ dstr=code2('decoding','cstr')
 #print(dstr)  
 code2('import_key',key)
 dstr=code2('decoding',cstr)
-print(dstr)
+#print(dstr)
 code2('empty_key')
 code2('export_key')
 #===============================================#
