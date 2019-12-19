@@ -250,48 +250,71 @@ types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')}
 
 #===============================================#
 def coding():
-    key={'reverse_word':None,'reverse_string':None}
     newKey={}
+    key={'reverse_word':None,'reverse_string':None}
     alphabet={'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z'}
     def set_key(step):
-        nonlocal newKey
-        'shifting alphabet'
-        dic_len = len(alphabet)
-        # Reduce the shift to the dic length
-        #shift = shift % dic_len
-        # convert the dict to a tupple to reference by index
-        list_dic = [(k,v) for k, v in alphabet.items()]
-        # Create the new shifted dict
-        shifted = {
-        list_dic[x][0]: list_dic[ (x + step[0]) % dic_len ][1]
-        for x in range(dic_len) }
-        'set key'
-        if step[1]=='yes': newKey['reverse_word']=True
-        else: key['reverse_word'] =False
-        if step[2]=='yes': newKey['reverse_string']=True
-        else: key['reverse_string'] =False
-        newKey.update(newKey)
-        newKey.update(shifted)
-        return 'done'
+        
+        nonlocal newKey   
+        if type(step)==tuple:
+            dic_len = len(alphabet)
+            # Reduce the shift to the dic length
+            #shift = shift % dic_len
+            # convert the dict to a tupple to reference by index
+            list_dic = [(k,v) for k, v in alphabet.items()]
+            # Create the new shifted dict
+            shifted = {
+                list_dic[x][0]: list_dic[ (x + step[0]) % dic_len ][1] for x in range(dic_len) }
+            if step[1]=='yes': newKey['reverse_word']=True
+            if step[1]=='no': newKey['reverse_word'] =False
+            if step[2]=='yes': newKey['reverse_string']=True
+            if step[2]=='no': newKey['reverse_string'] =False
+            newKey.update(newKey)
+            newKey.update(shifted)
+            return 'done'
+        else: newKey=step
     def encoding(sentence):
         'replacing letters'
         encoding_dict ={k: v for k, v in newKey.items() if k not in key}
         sentence = ''.join([encoding_dict.get(i, i) for i in sentence])
+        
+        
+        # need to change
+        #----------------------------------------------------#
+        sentence=' '.join(word[::-1] for word in sentence.split(" ")) 
+        sentence=' '.join(reversed(sentence.split(' ')))
+        #print("encoding-->",sentence)
+        #----------------------------------------------------#
         return sentence
     def decoding(sentence):
-        encoding_dict ={k: v for k, v in newKey.items() if k not in key}
-        decoding_dict2 = dict((y,x) for x,y in encoding_dict.items())
-        sentence = ''.join([decoding_dict2.get(i, i) for i in sentence])
-        return sentence
+        keydec=dispatch('export_key')
+        if keydec=='key empty':return 'key empty' 
+        else:
+            
+            # need to change
+            #----------------------------------------------------#
+            sentence=' '.join(reversed(sentence.split(' ')))
+            sentence=' '.join(word[::-1] for word in sentence.split(" ")) 
+            #----------------------------------------------------#
+
+            decoding_dict2 = dict((y,x) for x,y in keydec.items())
+            sentence = ''.join([decoding_dict2.get(i, i) for i in sentence])
+            return sentence
     def empty_key():
-        nonlocal newKey
-        newKey={k: v for k, v in key.items() if k not in newKey.items()}
+        keydec=dispatch('export_key')
+        keydec= {}
+        #newKey={k: v for k, v in key.items() if k not in keydec.items()}
+        newKey=keydec
+        dispatch('set_key',newKey)
         return 'done'
     def export_key():
-        if newKey['reverse_word'] is 'None' or newKey['reverse_string']==None:return 'key empty'
+        if newKey=={}:return 'key empty'
         else: return newKey
     def import_key(sendKey):
-        return 
+        if sendKey=={}:return 'key empty'
+        #elif 'export_key'!={}: return 'have a key'
+        else: dispatch('set_key',sendKey)
+        return 'done'
         
     def dispatch(message,args=None):
         if message=='set_key':return set_key(args)
@@ -301,48 +324,24 @@ def coding():
         if message=='export_key':return export_key()
         if message=='decoding':return decoding(args)
     return dispatch
+
+
 code1=coding() 
-code1('set_key',(-3,'yes','yes'))
+code1('set_key',(-3,'yes','yes')) 
 key=code1('export_key')
-print(key) 
-
-#=====================================================
-#=====================================================
-#=====================================================
-
-
-
-
-
-
-import string
-
-
-
-dic = {'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z'}
-dica ={'a': 'x', 'b': 'y', 'c': 'z', 'd': 'a', 'e': 'b', 'f': 'c', 'g': 'd', 'h': 'e', 'i': 'f', 'j': 'g', 'k': 'h', 'l': 'i', 'm': 'j', 'n': 'k', 'o': 'l', 'p': 'm', 'q': 'n', 'r': 'o', 's': 'p', 't': 'q', 'u': 'r', 'v': 's', 'w': 't', 'x': 'u', 'y': 'v', 'z': 'w'}
-str='the london is the capital of great britain'
-
-
-#print(dic)
-#print(shift_dict(dic, -1))
-d1 = {1: 1, 2: 2}
-d2 = {3: 'ha!', 4: 3}
-d1.update(d2)
-res={**d1,**d2}
-
-
-parent_dict = {"a" : "aaa", "b" : "bbb", "c" : "ccc", "d" : "ddd", "e": "eee"}
-derived_dict = {"a" : "aaa", "d" : "ddd", "e" : "eee"}
-parent_dict ={k: v for k, v in parent_dict.items() if k  in derived_dict}
-
-
-#=====================================================
-#=====================================================
-#=====================================================
-
-
-
+#print(key)
+cstr=code1('encoding','the london is the capital of great britain') 
+print(cstr)
+dstr=code1('decoding',cstr) 
+#print(dstr)
+code2=coding()
+dstr=code2('decoding','cstr')
+#print(dstr)  
+code2('import_key',key)
+dstr=code2('decoding',cstr)
+print(dstr)
+code2('empty_key')
+code2('export_key')
 #===============================================#
 
                 # task 5
@@ -416,6 +415,45 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
 #park1['end_parking'](224)
 #prn=park1['print_list']() 
 #park1['print_parking']('Regular')
+
+
+def make_account():
+    balance = 0
+    def dispatch(x):
+        if x == 'get':
+            return balance
+        elif x == 'change':
+            def change(y):
+                nonlocal balance
+                if  dispatch('get') >= -y:
+                    balance += y
+                else:
+                    return 'Out of funds during change'
+                return balance
+            return change
+        elif x == 'move':
+            def move(y,z):
+                if z < 0:
+                    return 'Negative transaction amount'
+                elif dispatch('get') < z:
+                    return 'Out of funds during change'
+                else:
+                    return (dispatch('change')(-z),y('change')(z))
+            return move
+        return balance
+    return dispatch
+# ------------------------------------------------
+#a1 = make_account()
+#a1 # => <function make_account.<locals>.dispatch at 0x0000022ABD3332F0>
+#a2=make_account()
+#a1('change')(20) # => 20
+#print(a1('get')) # => 20
+#a2('change')(50) # => 'Out of funds during change'
+#print(a2("get"))
+#a1('move')(a2, 7) # => (13, 7)
+#a2('move')(a1, 2) # => (5, 15)
+#a1('move')2, 30) # => 'Out of funds during change'
+#a1('move')(a2, -30) # => 'Negative transaction amount'
 
 
 
