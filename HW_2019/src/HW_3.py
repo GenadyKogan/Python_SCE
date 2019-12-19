@@ -279,7 +279,7 @@ def coding():
         sentence = ''.join([encoding_dict.get(i, i) for i in sentence])
         
         
-        # need to change
+        #  need to change, add reverse_word, reverse_string depend if key but not automatically
         #----------------------------------------------------#
         sentence=' '.join(word[::-1] for word in sentence.split(" ")) 
         sentence=' '.join(reversed(sentence.split(' ')))
@@ -291,7 +291,7 @@ def coding():
         if keydec=='key empty':return 'key empty' 
         else:
             
-            # need to change
+            # need to change, add reverse_word, reverse_string depend if key but not automatically
             #----------------------------------------------------#
             sentence=' '.join(reversed(sentence.split(' ')))
             sentence=' '.join(word[::-1] for word in sentence.split(" ")) 
