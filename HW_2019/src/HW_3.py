@@ -209,6 +209,7 @@ def tree_balanced(tree):
 #===============================================#
 from functools import reduce
 def get_prices(nameOfStore,products,sales):
+    '''(('p1', 800.0), ('p2', 1600.0), ('p3', 4000.0), ('p4', 80.0)) '''
     #res3=list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))
     #return tuple(map(lambda x: (x[0],x[1]-x[1]*res3[0]), products))
     return tuple(map(lambda x: (x[0],x[1]-x[1]*list(map(lambda x:x[1],list(filter(lambda x:x[0]==nameOfStore,sales ))))[0]), products))
@@ -216,8 +217,10 @@ products = (('p1',1000),('p2',2000),('p3',5000),('p4',100))
 sales = (('s1',0.2),('s2',0.3),('s3',0.1))
 #print(get_prices('s1', products, sales))
 #===============================================#
-def get_prices_dict(nameOfStore,products,sales):
-    return dict(zip(products.keys(), list(map(lambda x: x-x*sales[nameOfStore], products.values()))))
+def get_prices_dict(nameOfStore,prod_dict,sale_dict):
+    ''' using dictionary
+    {'p1': 800.0, 'p2': 1600.0, 'p3': 4000.0, 'p4': 80.0} '''
+    return dict(zip(prod_dict.keys(), map(lambda x: x-x*sale_dict[nameOfStore], prod_dict.values())))
 prod_dict = dict(products)     
 sale_dict = dict(sales)
 #print(get_prices_dict('s1', prod_dict, sale_dict))  
@@ -226,11 +229,17 @@ sale_dict = dict(sales)
 sales = {'s1':{'t1':0.2, 't2':0.1}, 's2':{'t1':0.1, 't2':0.2},'s3':{'t1':0.3, 't2':0.5}} 
 types = {'t1':('p2', 'p4'), 't2':('p1', 'p3')} 
 def get_prices_by_type(nameOfStore,prod_dict,sales,types):
+    '''step1: from sales ---> {'t1': 0.2, 't2': 0.1}
+        step2: find in types key from step1 and replace ---> ((0.2, ('p2', 'p4')), (0.1, ('p1', 'p3')))
+        step3: get answer ---> {'p1': 900.0, 'p2': 1600.0, 'p3': 4500.0, 'p4': 80.0'''
     return dict(map(lambda x:(x,prod_dict[x]-prod_dict[x]*tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else print('Incorrect'),types))[0][0]) if x in tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else print('Wrong data'),types))[0][1] else
                       (x,prod_dict[x]-prod_dict[x]*tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else print('Incorrect'),types))[1][0]) ,prod_dict))
 #print(get_prices_by_type('s1', prod_dict, sales, types))
-
-
+import operator
+def accumulate_prices(nameOfStore, prod_dict, sales, types, func):
+    '''using get_prices_by_type function with choosing values'''
+    return reduce(func,get_prices_by_type(nameOfStore,prod_dict,sales,types).values()) 
+#print(accumulate_prices('s1', prod_dict, sales, types, operator.add))
 #===============================================#
 
                 # task 4
