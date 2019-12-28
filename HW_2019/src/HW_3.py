@@ -15,11 +15,14 @@ def make_power(x,y):
 #===============================================#
 def getitePower(p,i):return p(i)
 #===============================================#
+'''function that return base of number'''
 def base(x):return getitePower(x,0)
 #===============================================#
+'''function that return power of number'''
 def power(x):return getitePower(x,1)
 #===============================================#
 def print_power(x):
+    '''function: print number'''
     if power(x)>0 and power(x)<1:print(x)
     elif power(x)==0:print(1)
     elif power(x)==1:print('{0}'.format(base(x)) )    
@@ -27,10 +30,12 @@ def print_power(x):
     #return '{0}{1}{2}'.format(base(x),(lambda x:'^' if x>=0 else '^')(power(x)),power(x))
     else:print('{0}{1}{2}'.format(base(x),'^',power(x)))  
 #===============================================#
+'''improving number usung 2 function : returnBase and amountOfPower'''
 def improve_power(x):return make_power(returnBase(base(x)), amountOfPower(base(x))*power(x))
 #===============================================#
-import math
+
 def power_function(decimal, integer):
+    '''like power function'''
     num=1
     if integer>0:
         for i in range(integer):
@@ -42,10 +47,17 @@ def power_function(decimal, integer):
     return num
 
 #===============================================#
+def sqrtt(x):
+    '''like sqrt function'''
+    n = 1
+    for _ in range(10):
+        n = (n + x/n) * 0.5
+    return n
 def amountOfPower(n) : 
+   
     if (n==1):return 1
     # Try all numbers from 2 to sqrt(n) as base 
-    for x in range(2,(int)(math.sqrt(n))+1): 
+    for x in range(2,(int)(sqrtt(n))+1): 
         y = 2
         p = (int)(power_function(x,y)) 
         # Keep increasing y while power 'p' is smaller 
@@ -59,7 +71,7 @@ def amountOfPower(n) :
 def returnBase(n) : 
     if (n==1):return True
     # Try all numbers from 2 to sqrt(n) as base 
-    for x in range(2,(int)(math.sqrt(n))+1) : 
+    for x in range(2,(int)(sqrtt(n))+1) : 
         y = 2
         p = (int)(power_function(x,y)) 
         # Keep increasing y while power 'p' is smaller 
@@ -70,25 +82,11 @@ def returnBase(n) :
             p=power_function(x,y) 
     return 1
 
-#===============================================#
-def isPower(n) : 
-    if (n==1)  : 
-        return True
-    # Try all numbers from 2 to sqrt(n) as base 
-    for x in range(2,(int)(math.sqrt(n))+1) : 
-        y = 2
-        p = (int)(math.pow(x, y)) 
-        # Keep increasing y while power 'p' is smaller 
-        # than n.  
-        while (p<=n and p>0) : 
-            if (p==n) : 
-                return True
-            y = y + 1
-            p = math.pow(x, y) 
-    return False
-#print(isPower(19683))
+ 
+
 #===============================================#
 def mul_power(x,y):
+    '''mul two number'''
     a=power_function(base(x),power(x))
     b=power_function(base(y),power(y))
     res = a*b
@@ -99,6 +97,7 @@ def mul_power(x,y):
 
 #===============================================#
 def div_power(x,y):
+    '''div to number'''
     a=power_function(base(x),power(x))
     b=power_function(base(y),power(y))
     if returnBase(a)==returnBase(b) and amountOfPower(a)<amountOfPower(b):
@@ -157,18 +156,20 @@ def print_tree(tree):
         print_tree(right(tree))
 #===============================================#
 def count_value(tree,val):
+    '''function gets value as a parameter and returns how many times it appears in the tree'''
     if tree==None:return 0
     if value(tree)==val:return 1+count_value(left(tree),val)+ count_value(right(tree),val)
     return 0+count_value(left(tree),val)+ count_value(right(tree),val)
 #===============================================#
 def tree_BST(tree):
-  
+    '''function return True if tree is BST'''
     if tree==None:return True  
     elif left(tree) != None:return value(tree)>value(left(tree)) and tree_BST(left(tree))
     elif left(tree) != None:return value(tree)<value(right(tree)) and tree_BST(right(tree))
     return tree_BST(left(tree)) and tree_BST(right(tree))
 #===============================================#
-def  tree_depth(tree): 
+def  tree_depth(tree):
+    '''function returns tree height'''
     if tree==None:return -1
     else:         
         lDepth=tree_depth(left(tree))
@@ -177,6 +178,7 @@ def  tree_depth(tree):
         else:return rDepth+1
 #===============================================#      
 def tree_balanced(tree):
+    '''function return true if a tree is a balanced tree '''
     if tree==None:return True
     lh=tree_depth(left(tree))
     rh=tree_depth(right(tree))
@@ -232,9 +234,13 @@ def get_prices_by_type(nameOfStore,prod_dict,sales,types):
     '''step1: from sales ---> {'t1': 0.2, 't2': 0.1}
         step2: find in types key from step1 and replace ---> ((0.2, ('p2', 'p4')), (0.1, ('p1', 'p3')))
         step3: get answer ---> {'p1': 900.0, 'p2': 1600.0, 'p3': 4500.0, 'p4': 80.0'''
-    return dict(map(lambda x:(x,prod_dict[x]-prod_dict[x]*tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else print('Incorrect'),types))[0][0]) if x in tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else print('Wrong data'),types))[0][1] else
-                      (x,prod_dict[x]-prod_dict[x]*tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else print('Incorrect'),types))[1][0]) ,prod_dict))
-#print(get_prices_by_type('s1', prod_dict, sales, types))
+    return dict(map(lambda x:(x,prod_dict[x]- tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else False,types))[0][0]*prod_dict[x]) 
+                    if x in tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else False,types))[0][1] else
+                    (x,prod_dict[x]-tuple(map(lambda x:(sales[nameOfStore][x],types[x]) if x in sales[nameOfStore] else False,types))[1][0]*prod_dict[x])
+                     ,prod_dict))
+    #return {a: (b - sales.get(nameOfStore).get(tuple(filter(lambda x: True if a in types[x] else False, types))[0]) * b) for
+            #a, b in prod_dict.items()}
+print(get_prices_by_type('s1', prod_dict, sales, types))
 import operator
 def accumulate_prices(nameOfStore, prod_dict, sales, types, func):
     '''using get_prices_by_type function with choosing values'''
@@ -246,10 +252,12 @@ def accumulate_prices(nameOfStore, prod_dict, sales, types, func):
 
 #===============================================#
 def coding():
+    '''encrypting and decode the text that consists of words with one space'''
     key={'reverse_word':None,'reverse_string':None}
     newKey={}
     alphabet={'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f', 'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l', 'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r', 's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x', 'y': 'y', 'z': 'z'}
     def set_key(step):
+        '''Create an encryption key'''
         nonlocal newKey
         dic_len = len(alphabet)
         list_dic = [(k, v) for k, v in alphabet.items()]
@@ -266,6 +274,7 @@ def coding():
         return 'done'
 
     def encoding(sentence):
+        '''encryption'''
         encoding_dict ={k: v for k, v in newKey.items() if k not in key}
         sentence = ''.join([encoding_dict.get(i, i) for i in sentence])
         sentence = sentence[::-1]
@@ -273,6 +282,7 @@ def coding():
 
 
     def decoding(sentence):
+        '''Decoding of sentence'''
         if bool(newKey)==True:
             encoding_dict = {k: v for k, v in newKey.items() if k not in key}
             decoding_dict2 = dict((y, x) for x, y in encoding_dict.items())
@@ -283,17 +293,20 @@ def coding():
             return 'key empty'
 
     def import_key(sendKey):
+        '''Encryption key import'''
         nonlocal newKey
         newKey=sendKey
         sendKey['reverse_string'] = True
         return 'done'
 
     def empty_key():
+        '''returning to default key'''
         nonlocal newKey
         newKey={k: v for k, v in key.items() if k not in newKey.items()}
         return 'done'
 
     def export_key():
+        '''Encryption key export'''
         if newKey['reverse_string']==True:return newKey
         else:return 'key empty'
 
@@ -332,6 +345,7 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
     
 #===============================================#
     def print_list():
+        '''function print details of each vehicle'''
         i = len(listOfParking)-1
         def end():
             if i>0:
@@ -346,15 +360,18 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
         return {"end":end,'next':next}
 #===============================================#
     def print_parking(key):
+        '''function print details of each vehicle that in the parking lot'''
         for item in listOfParking:    
             if item[1]==key:
                 print('{0}{1}{2}{3}'.format('car: ', item[0], ', parking time: ', item[2]))
 #===============================================#
     def next_time():
+        '''promote hours of parking'''
         for item in listOfParking:
             item[2]+=1   
 #===============================================#
     def start_parking(key,value):
+        '''start parking'''
         nonlocal numRegPla
         nonlocal numPriorPla
         nonlocal numVIPPla
@@ -368,6 +385,7 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
         
 #===============================================#
     def end_parking(numOfCar):
+        '''end parking'''
         nonlocal listOfParking
         flag=0
         paying=0
