@@ -194,21 +194,19 @@ def make_calentry_class():
 
 #===============================================#
 rates ={('dollar', 'nis'): 3.47,('euro','nis'): 3.88,('euro','dollar'):1.12,('dollar','euro'):0.90 ,('nis','dollar'):0.29,('nis','euro'):0.26}
-class Shekel(object):
+
+class Shekel():
     def __init__(self,am):
-        self.shekel=am
-    def amount(self):
-        return self.shekel
+        self.amount=am
     def __str__(self):
-        return '{0:.1f}nis'.format(self.shekel)  
+        return '{0:.1f}nis'.format(self.amount)  
     def __repr__(self):
-        return "Shekel({0:.2f})".format(self.amount())
+        return "Shekel({0:.2f})".format(self.amount)
     def __add__(self,other):
         if type(other) == Shekel:
-            return  self.shekel+other.shekel
-        return self.shekel +other.shekel()
-
-class Dollar (object):
+            return  self.amount+other.amount
+        return self.amount +other.amount()
+class Dollar ():
     def __init__(self,am):
         self.dollar=am
     def amount(self):
@@ -223,44 +221,29 @@ class Dollar (object):
         return self.amount() +other.amount()
         
 
-class Euro (object):
+class Euro ():
     def __init__(self,am):
         self.euro=am
     def amount(self):
         return self.euro*rates[('euro','nis')]    
     def __str__(self):
-        return '{0:.1f}{1}'.format(self.euro,chr(8364))  
+        return '{0:.1f}euro'.format(self.euro)  
     def __repr__(self):
         return "Euro({0:.2f})".format(self.euro)
     def __add__(self,other):
         if type(other) == Shekel:
             return  self.amount()+other.amount
         return self.amount() +other.amount()
-def add(z1,z2):return z1.amount()+z2.amount()
-def sub (z1,z2): return z1.amount() -z2.amount()
-#s = Shekel(50)
-#d = Dollar(50)
-#e = Euro(50) 
-#print(d.amount())
-#print(e.amount())
-#print(d + s)
-#print(add(e,d))
-#z=eval(repr(d))
-#print(repr(d))
-#print(z)
-#print(s)
-#print(e)
 #===============================================#
 
                 # task 4
 
-#===============================================#
+#===============================================#    
 def add_shekel_dollar(sh,dol):
-    
-    return sh.amount()+dol.amount()
+    return sh.amount+dol.amount()
 add_dollar_shekel=lambda x,y:add_shekel_dollar(y,x)  
 def add_shekel_euro(sh,eu):
-    return sh.amount()+eu.amount()
+    return sh.amount+eu.amount()
 add_euro_shekel=lambda x,y:add_shekel_euro(y,x)
 def add_dollar_euro(dol,eur):
     return dol.amount()+eur.amount()
@@ -268,10 +251,10 @@ add_euro_dollar=lambda x,y:add_dollar_euro(y,x)
 
                     
 def sub_shekel_dollar(sh,dol):
-    return sh.amount()-dol.amount()
+    return sh.amount-dol.amount() 
 sub_dollar_shekel=lambda x,y: -sub_shekel_dollar(y,x)
 def sub_shekel_euro(sh,eu):
-    return sh.amount()-eu.amount()
+    return sh.amount-eu.amount()
 sub_euro_shekel=lambda x,y:-sub_shekel_euro(y,x)
 def sub_dollar_euro(dol,eu):
     return dol.amount()-eu.amount()
@@ -287,7 +270,6 @@ def apply(operator_name, x, y):
         return type(x)(apply.implementations[key](x, y)).__repr__()
 
 def type_tag(x):
-   
     return type_tag.tags[type(x)]
 
 type_tag.tags = {Shekel: 'nis',Dollar: 'dollar', Euro: 'euro'}
@@ -310,16 +292,44 @@ apply.implementations={('add',('nis','dollar')):lambda x,y: add_shekel_dollar(x,
                        ('sub',('dollar','dollar')):lambda x,y:x.dollar+y.dollar,
                        ('sub',('euro','nis')):lambda x,y:sub_euro_shekel(x,y)/rates[('euro','nis')],
                        ('sub',('euro','dollar')):lambda x,y:x.euro - y.dollar/rates[('euro','dollar')], 
-                       ('sub',('euro','euro')):lambda x,y:x.euro-y.euro}
-        
-        
-print(apply('add',  Dollar(20),Shekel(50)))
-#Shekel(131.4)
-#rates[('euro','dollar')] = 1.06
+                       ('sub',('euro','euro')):lambda x,y:x.euro-y.euro}           
+print(apply('add', Shekel(50), Dollar(20)))
+
+rates[('euro','dollar')] = 1.06
 print(apply('add', Dollar(50), Euro(20)))
 print(apply('sub', Dollar(50), Euro(20)))
 #===============================================#
 
-                # task 4
+                # task 5
 
 #===============================================#
+coercions={('dollar','nis'):lambda x:Shekel(x.amount()),('euro','nis'):lambda x:Shekel(x.amount()) } 
+def coerce_apply(operator_name, x, y): 
+    
+    tx, ty = type_tag(x), type_tag(y)
+    
+    if tx is not 'nis' and ty is not 'nis':
+        x=coercions[(tx,'nis')](x)
+        y=coercions[(ty,'nis')](y)
+        tx=type_tag(x)
+        
+    elif tx!=ty:
+        if (tx, ty) in coercions:
+            tx, x = ty, coercions[(tx, ty)](x)
+        elif (ty, tx) in coercions:
+            ty, y = tx, coercions[(ty, tx)](y)
+        else:
+            return 'No coercion possible.'
+
+    
+                      
+    key = (operator_name, tx)
+    return coerce_apply.implementations[key](x, y)
+
+ 
+coerce_apply.implementations={('add','nis'):lambda x,y: repr(Shekel(x.amount+y.amount)),('sub','nis'):lambda x,y: repr(Shekel(x.amount-y.amount))}
+#print( coercions[('dollar','nis')](Dollar(50)) )
+print(  coerce_apply('add', Shekel(50), Dollar(20)) )
+
+
+

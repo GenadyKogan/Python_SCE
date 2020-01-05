@@ -240,7 +240,7 @@ def get_prices_by_type(nameOfStore,prod_dict,sales,types):
                      ,prod_dict))
     #return {a: (b - sales.get(nameOfStore).get(tuple(filter(lambda x: True if a in types[x] else False, types))[0]) * b) for
             #a, b in prod_dict.items()}
-print(get_prices_by_type('s1', prod_dict, sales, types))
+#print(get_prices_by_type('s1', prod_dict, sales, types))
 import operator
 def accumulate_prices(nameOfStore, prod_dict, sales, types, func):
     '''using get_prices_by_type function with choosing values'''
@@ -371,6 +371,7 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
             item[2]+=1   
 #===============================================#
     def start_parking(key,value):
+        
         '''start parking'''
         nonlocal numRegPla
         nonlocal numPriorPla
@@ -400,9 +401,9 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
             
     return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
 
-#park1=parking(10,3,3,3) 
+park1=parking(10,3,3,3) 
 #print( park1 )
-#park1['start_parking'](222,'Regular') 
+park1['start_parking'](222,'Regular') 
 #park1['start_parking'](223,'Regular') 
 #park1['next_time']() 
 #park1['start_parking'](224,'Regular') 
