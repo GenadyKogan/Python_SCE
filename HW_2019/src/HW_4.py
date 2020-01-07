@@ -256,10 +256,6 @@ sub_euro_shekel=lambda x,y:-sub_shekel_euro(y,x)
 def sub_dollar_euro(dol,eu):
     return dol.amount()-eu.amount()
 sub_euro_dollar=lambda x,y:-sub_dollar_euro(y,x)
-
-
-
-
             
 def apply(operator_name, x, y):
         tags = (type_tag(x), type_tag(y))
@@ -449,11 +445,32 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
 #park1['end_parking'](100)
 #park1['end_parking'](223)
 #park1['print_parking']('Regular') 
+#===============================================#
 
+                # task 7
 
+#===============================================#
+class Expr():
+    def __init__(self,entry,left,right):
+        self.entry=entry
+        self.left=left
+        self.right=right
+    def __repr__(self):
+        return "Expr({0},{1},{2})".format(repr(self.entry),repr(self.left),repr(self.right))
 
+#===============================================#
 
+                # task 7
 
+#===============================================#
+def build_expr_tree(tree):
+    if type(tree)!=tuple:return tree
+    else:return Expr(build_expr_tree(tree[0]),build_expr_tree(tree[1]),build_expr_tree(tree[2]))
+#exp = build_expr_tree(('add', ('mul', 2, 3), 10))
+#print(exp)
+#tree = ('add', ('mul', ('sub', 10,3), 3), 10)
+#exp = build_expr_tree(tree)
+#print(exp)
 
 #===============================================#
 
@@ -596,6 +613,9 @@ def analyze_token(token):
             return float(token)
         except (TypeError, ValueError):
             return token
-repl()
-####OUTPUT examples#####
-# calc> round(div(1,6),3)
+#repl()
+#calc> mul() 
+#calc> div(1, sub(2,2))
+#calc> mul(div(1, sub(2,2)),10)
+#calc> round(div(add(4,3), 3), 2) 
+#calc> round(div(add(4,3), 6), 2) 
