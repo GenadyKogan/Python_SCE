@@ -166,9 +166,6 @@ def make_calentry_class():
         Date['get']('__init__')(self,year,month,day)
         
     def addTask(self,task,start,end):
-        
-       
-        
         time=(start['get']('__str__')(),end['get']('__str__')())
         for x in self['get']('tasks'):
             if x[0]==start['get']('__str__')() and x[1]==end['get']('__str__')():
@@ -293,11 +290,11 @@ apply.implementations={('add',('nis','dollar')):lambda x,y: add_shekel_dollar(x,
                        ('sub',('euro','nis')):lambda x,y:sub_euro_shekel(x,y)/rates[('euro','nis')],
                        ('sub',('euro','dollar')):lambda x,y:x.euro - y.dollar/rates[('euro','dollar')], 
                        ('sub',('euro','euro')):lambda x,y:x.euro-y.euro}           
-print(apply('add', Shekel(50), Dollar(20)))
+#print(apply('add', Shekel(50), Dollar(20)))
 
 rates[('euro','dollar')] = 1.06
-print(apply('add', Dollar(50), Euro(20)))
-print(apply('sub', Dollar(50), Euro(20)))
+#print(apply('add', Dollar(50), Euro(20)))
+#print(apply('sub', Dollar(50), Euro(20)))
 #===============================================#
 
                 # task 5
@@ -329,7 +326,276 @@ def coerce_apply(operator_name, x, y):
  
 coerce_apply.implementations={('add','nis'):lambda x,y: repr(Shekel(x.amount+y.amount)),('sub','nis'):lambda x,y: repr(Shekel(x.amount-y.amount))}
 #print( coercions[('dollar','nis')](Dollar(50)) )
-print(  coerce_apply('add', Shekel(50), Dollar(20)) )
+#print(  coerce_apply('add', Shekel(50), Dollar(20)) )
+#===============================================#
+
+                # task 6
+
+#===============================================#
+import sys
+def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
+    #try: 
+        
+        #assert payForHour > 0 # Test if it true
+    #except AssertionError :
+        #print("Number is negative")
+    try:
+        if payForHour < 0:
+            raise ValueError ( "the price value is bad " )
+        if numRegPla<=0 or numPriorPla<=0 or numVIPPla<=0:
+            raise ValueError ( "parking places error" )
+    except ValueError as e:
+            print(e)
+            sys.exit(1)
+    listOfParking=[]
+    
+#===============================================#
+    def print_list():
+        z=0
+        '''function print details of each vehicle'''
+        i = len(listOfParking)
+        '''def end():
+            if i>0:
+                return False
+            else:
+                return True
+        def next():
+            nonlocal i
+            for item in listOfParking:
+                print('{0}{1}{2}{3}{4}{5}'.format('car: ', item[0]  ,', parking type: ', item[1], ', parking time: ', item[2]))
+                i=i-1
+        return {"end":end,'next':next}'''
+        def next():
+            nonlocal z
+            try:
+                
+                print(listOfParking[z][0],listOfParking[z][1])
+            
+                z=z+1
+                if z>i:
+                    raise IndexError 
+            except IndexError :
+                print("no car")
+            
+        return {'next':next}
+#===============================================#
+    def print_parking(key):
+        '''function print details of each vehicle that in the parking lot'''
+        for item in listOfParking:    
+            if item[1]==key:
+                print('{0}{1}{2}{3}'.format('car: ', item[0], ', parking time: ', item[2]))
+#===============================================#
+    def next_time():
+        '''promote hours of parking'''
+        for item in listOfParking:
+            item[2]+=1   
+#===============================================#
+    def start_parking(key,value):
+        #print('value --->',value) or value!='VIP' or value !='Priority'
+        try:
+            if type(key) != int:
+                raise TypeError ('incorrect car number')
+            if value!='Regular' and  value!='VIP' and value !='Priority':
+                raise TypeError(value+' is incorrect prking type')
+            
+        except TypeError as e:
+            print(e)
+        else:    
+            '''start parking'''
+            nonlocal numRegPla
+            nonlocal numPriorPla
+            nonlocal numVIPPla
+            if value=='Regular':numRegPla-=1
+            if value=='Priority':numPriorPla-=1
+            if value=='VIP':numVIPPla-=1
+            if numRegPla<=-1 and value=='Regular':return print('{0}{1}'.format('Regular ' ,'parking is full')) 
+            elif numPriorPla<=-1 and value=='Priority':return print('{0}{1}'.format('Priority ' ,'parking is full') )
+            elif numVIPPla<=-1and value=='VIP': return print('{0}{1}'.format('VIP ' ,'parking is full'))
+            listOfParking.append([key, value,1])
+        
+#===============================================#
+    def end_parking(numOfCar):
+        '''end parking'''
+        nonlocal listOfParking
+        flag=0
+        paying=0
+        for item in listOfParking:
+            if item[0]==numOfCar: 
+                paying = item[2]*payForHour
+                print('{0}{1}{2}{3}{4}{5}{6}{7}'.format('car: ', item[0]  ,', parking type: ', item[1], ', parking time: ', item[2], ', payment: ', paying))
+                listOfParking = [i for i in listOfParking if i[0] != numOfCar]
+                flag=1
+                break
+        if flag==0: print("car not found") 
+            
+    return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
+
+#park1=parking(10,3,3,3) 
+#print( park1 )
+#park1['start_parking']('aaa','Regular') 
+#park1['start_parking'](223,'VIP1')
+#park1['start_parking'](222,'Regular')
+#park1['start_parking'](223,'Regular')
+#park1['next_time']() 
+#park1['start_parking'](224,'Regular')
+#park1['start_parking'](225,'VIP') 
+#prn=park1['print_list']()
+#print(prn)
+'''while not prn['end']():  
+    prn['next']()'''
+#for _ in range(6):
+    #prn['next']()
+#park1['print_parking']('VIP')
+#park1['end_parking'](100)
+#park1['end_parking'](223)
+#park1['print_parking']('Regular') 
 
 
 
+
+
+
+#===============================================#
+
+                # task 9
+
+#===============================================#
+
+from functools import reduce
+from operator import mul,add
+from math import sqrt
+
+def repl():
+    
+    while True:
+        try:
+            expression_tree = calc_parse(input('calc> '))                    
+            print(calc_eval(expression_tree))
+        #### new errors: ValueError, ArithmeticError ####
+        except (SyntaxError, TypeError, ValueError, ArithmeticError) as err:
+            print(type(err).__name__ + ':', err)
+        except (KeyboardInterrupt, EOFError):  # <Control>-D, etc. <ctrl-C>
+            print('Calculation completed.')
+            return
+
+## Eval & Apply
+
+class Exp(object):
+    def __init__(self, operator, operands):
+        self.operator = operator
+        self.operands = operands
+
+    def __repr__(self):
+        return 'Exp({0}, {1})'.format(repr(self.operator), repr(self.operands))
+
+    def __str__(self):
+        operand_strs = ', '.join(map(str, self.operands))
+        return '{0}({1})'.format(self.operator, operand_strs)
+
+def calc_eval(exp):
+    if type(exp) in (int, float):
+        return exp
+    if type(exp) == Exp:
+        arguments = list(map(calc_eval, exp.operands))
+        return calc_apply(exp.operator, arguments)
+    ##### sequence ###
+    if type(exp) == list:
+          return list(map(calc_eval, exp))
+    
+def calc_apply(operator, args):
+    if operator in ('add', '+'):
+        return sum(args)
+    if operator in ('sub', '-'):
+        if len(args) == 0:
+            raise TypeError(operator + 'requires at least 1 argument')
+        if len(args) == 1:
+            return -args[0]
+        return sum(args[:1] + [-arg for arg in args[1:]])
+    if operator in ('mul', '*'):
+        #new test
+        if len(args) == 0:
+            raise TypeError(operator + 'requires at least 1 argument')
+        return reduce(mul, args, 1)
+    if operator in ('div', '/'):
+        if len(args) != 2:
+            raise TypeError(operator + ' requires exactly 2 arguments')
+        #numer, denom = args
+        #returns infinite if denominator = 0
+####        if denom == 0: return float("inf")
+####        return float(numer)/denom
+        #OR:
+        try:
+                return args[0]/args[1]
+        except ZeroDivisionError as s:
+                return float("inf")
+    #### new operator - round ####
+    if operator == 'round':
+        if len(args) != 2:
+            raise TypeError(operator + ' requires exactly 2 arguments')
+        base, prec = args
+        return round(base, prec)
+    
+### Parsing
+
+def calc_parse(line):
+    tokens = tokenize(line)
+    #### sequence of commands ####
+    if ';' in tokens:
+        result = []
+        while ';' in tokens:
+            token = tokens[0:tokens.index(';')]
+            result.append(analyze(token))
+            tokens = tokens[tokens.index(';')+1:]
+    else:
+    ##############################
+            result = analyze(tokens)
+    if len(tokens) > 0:
+        raise SyntaxError('Extra token(s): ' + ' '.join(tokens))
+    return result
+
+def tokenize(line):
+    #### add token ';' ###
+    spaced = line.replace('(',' ( ').replace(')',' ) ').replace(',', ' , ').replace(';',' ; ')
+    return spaced.strip().split()
+
+###new operator: 'round'
+known_operators = ['round', 'add', 'sub', 'mul', 'div', 'pow', 'sqrt', '+', '-', '*', '/', '^', 'V']
+
+def analyze(tokens):
+    assert_non_empty(tokens)
+    token = analyze_token(tokens.pop(0))
+    if type(token) in (int, float):
+        return token
+    if token in known_operators:
+        if len(tokens) == 0 or tokens.pop(0) != '(':
+            raise SyntaxError('expected ( after ' + token)
+        return Exp(token, analyze_operands(tokens))
+    else:
+        return token
+        
+def analyze_operands(tokens):
+    assert_non_empty(tokens)
+    operands = []
+    while tokens[0] != ')':
+        if operands and tokens.pop(0) != ',':
+            raise SyntaxError('expected ,')
+        operands.append(analyze(tokens))
+        assert_non_empty(tokens)
+    tokens.pop(0)  # Remove )
+    return operands
+
+def assert_non_empty(tokens):
+    if len(tokens) == 0:
+        raise SyntaxError('unexpected end of line')
+
+def analyze_token(token):
+    try:
+        return int(token)
+    except (TypeError, ValueError):
+        try:
+            return float(token)
+        except (TypeError, ValueError):
+            return token
+repl()
+####OUTPUT examples#####
+# calc> round(div(1,6),3)

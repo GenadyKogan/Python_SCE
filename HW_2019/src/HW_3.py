@@ -402,7 +402,7 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
     return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
 
 park1=parking(10,3,3,3) 
-#print( park1 )
+print( park1 )
 park1['start_parking'](222,'Regular') 
 #park1['start_parking'](223,'Regular') 
 #park1['next_time']() 
