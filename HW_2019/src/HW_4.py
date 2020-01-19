@@ -33,10 +33,10 @@ class CalendarEntry(Date):
         self.tasks={}
     def addTask(self,task,start,end):
         time=(str(start),str(end))
-        for x in self.tasks:
-            if x[0]==str(start) and x[1]==str(end):
-                print("there is already task on this time")
-                return
+        #for x in self.tasks:
+            #if x[0]==str(start) and x[1]==str(end):
+                #print("there is already task on this time")
+                #return
         self.tasks[time]=task
         #start_str,end_str=str(start),str(end)
         #self.tasks.__setitem__((start_str,end_str),task)
@@ -69,94 +69,159 @@ class CalendarEntry(Date):
 
                 # task 2
 
-#===============================================#
+#===============================================#    
 
-#class shmython    
-def make_instance(cls):
+
+
+
+
+
+
+
+
+
+def make_class(name, attrs, base=None):
     
-    '''Return a new object instance, which is a dispatch dictionary.'''
-    attributes = {}
-    def get_value(name):
-        if name in attributes:
-            return attributes[name]
-        else:
-            value = cls['get'](name)
-            #function: <function make_calentry_class.<locals>.addTask at 0x000002A1D486F1E0>
-        testValue=value
-        testInstance=instance
+    def ancestry():
         
-     
-        #dict: {'get': <function make_instance.<locals>.get_value at 0x0000022DC234E400>, 'set': <function make_instance.<locals>.set_value at 0x0000022DC234E488>}
-        return bind_method(value, instance)
-    def set_value(name, value):
-        #('year',year)
-        #('month',month)
-        #('day',day)
-        attributes[name] = value
-    instance = {'get': get_value, 'set': set_value}
-    return instance
-
-# ------------------------------------------------
-def bind_method(value, instance):
-    '''Return a bound method if value is callable, or value otherwise.'''
+        ##function return list of classes In order of inheritance
+        ##sample run
+        ##anc=CalendarEntry['get']('ancestry')()
+        ##print(list(c['get']('name') for c in anc))
+        #if not base:    return [cls]
+        #res = base['get']('ancestry')()
+        #print(res)
+        #res.insert(0,cls)
+        #return res
+        ##OR (there are multiple alternatives):
+        res = [cls]
+        if base:
+            res.extend(base['get']('ancestry')())
+        return res
+# ========================================================
+# ========================================================
+# ========================================================   
+    #def make_instance(cls):
+        #attrs = {}
+        #def get(name):
+            #if name in attrs:
+                #return attrs[name]
+            #else:
+                #value = cls['get'](name)
+                #if callable(value):
+                    #return lambda *args: value(obj, *args)
+                #else:
+                    #return value
+        #def set(name, value):
+            #attrs[name] = value
+        #obj   = { 'get': get, 'set': set }
+        #obj['set']('__dict__', attrs)
+        #obj['set']('__class__', cls)
+        
+        #return obj
     
-    if callable(value):
-        #value ---> function: <function make_calentry_class.<locals>.addTask at 0x0000027901B5E1E0>
-        def method(*args):
-            #instance ---> dict: {'get': <function make_instance.<locals>.get_value at 0x0000027901B5E400>, 'set': <function make_instance.<locals>.set_value at 0x0000027901B5E488>}
-            print()
-            res=value(instance, *args)
-            return res
-        return method
-    else:
-        return value
-def make_class(attributes, *base_class):
-    '''Return a new class, which is a dispatch dictionary.'''
-    # attributes ---> {'__init__': <function make_date_class.<locals>.__init__ at 0x000001FF7BA34F28>}
-    def get_value(name):
-        if name in attributes:
-            return attributes[name]
-        elif base_class is not None:
-            return base_class['get'](name)
-    def set_value(name, value):
-        attributes[name] = value
-       
+    
+    # return copy of obj
+    #def clone(obj):
+        ##cl = make_instance(obj['get']('__class__'))
+        #OR
+        #cl = make_instance(cls)
+        ##for key, val in obj['get']('__dict__').items():
+            ##cl['set'](key,val)
+        ##return cl
+    #cls['set']('__clone__', clone)
+# ========================================================
+# ========================================================
+# ========================================================
+    ## liki in JAVA --> self['get']('super')(owner) 
+    #def super(ob, *args):
+        #if base:
+            #init  = base['get']('__init__')
+            #if init: init(ob, *args)
+           
+# ========================================================
+# ========================================================
+# ========================================================
+    def get(name):
+        
+        
+        if name in attrs: return attrs[name]
+        if base:
+            'inheritance from different basic class'
+            for b in base:
+                x=b['get'](name)
+                return x        
+            #return base['get'](name)
+            'inheritance from different basic class'
+            
+        raise AttributeError('Attribute {0} is not defined for {1}'.format(name, attrs['name']))
+# ========================================================
+    def set(name, value): attrs[name] = value
+# ========================================================
     def new(*args):
-        #args ---> (2017, 1, 20)
-        #cls ---> {'get': get_value, 'set': set_value, 'new': new}
-        return init_instance(cls, *args)
-    cls = {'get': get_value, 'set': set_value, 'new': new}
-    return cls
+        def get(name):
+            if name in attrs:       return attrs[name]
+            else:
+                value = cls['get'](name)
+                #bind_method
+                if callable(value):
+                    #check if function with no arguments
+                    #if len((signature(value).parameters)== 0:
+                           #raise TypeError('Function with no arguments cannot be bound to object')
+                    return lambda *args: value(obj, *args)
+                else:               return value
+# ========================================================
+        def set(name, value):       attrs[name] = value
 
-def init_instance(cls, *args):
-    #cls ---> {'get': get_value, 'set': set_value, 'new': new}
-    #args ---> (2017, 1, 20)
-    '''Return a new object with type cls, initialized with args.'''
-    
-    instance = make_instance(cls)
-    #instance ---> {'get': get_value, 'set': set_value}
-    init = cls['get']('__init__')
-    #cls['get']('__init__') ---> go to make_class ---> go to get_value
-    #init ---> <function make_date_class.<locals>.__init__ at 0x00000220D1E64F28>
-    if init:
-        init(instance, *args)
+        attrs = {}
+        obj   = { 'get': get, 'set': set }
        
-        #instance ---> {'get': get_value, 'set': set_value}
-    return instance
+        try:
+            init  = get('__init__')
+            init(*args)
+        except:
+            print("A new instance of {0} cannot be initialized".format(cls['get']('name')))
+        # type class
+        # print(todo['get']('type'))
+        obj['set']('type', cls['get']('name'))
+        # type class
+        return obj
+
+    cls = { 'get': get, 'set': set, 'new': new }
+    'count amount of base class'
+    if not base: count=0
+    else: count = len(base)
+    attrs['BaseCount'] = count
+    'count amount of base class'
+    ### alef  set class name
+    #       or: set('name', name)
+    #       or: cls['set']('name', name)
+    ##count amount of base class
+    ##add name of class'
+    attrs['name'] = name
+    ##add name of class'
+    cls['set']('ancestry', ancestry)
+    
+    #cls['set']('super', super)
+    
+    return cls
+# -----------------------------------------------------------
 def make_date_class():
     def __init__(self,year,month,day):
         self['set']('year',year)
         self['set']('month',month)
         self['set']('day',day)
     attributes ={'__init__':__init__}
-    return make_class(attributes)
+    return make_class('make_date_class',attributes)
+# -----------------------------------------------------------
 def make_time_class():
     def __init__(self,hours,min):
         self['set']('hour',hours)
         self['set']('minute',min)
     def __str__(self):
         return '{0:02d}:{1:02d}'.format(self['get']('hour'),self['get']('minute'))
-    return make_class({'__init__':__init__ , '__str__':__str__})
+    return make_class('make_time_class',{'__init__':__init__ , '__str__':__str__})
+# -----------------------------------------------------------
 def make_calentry_class():
     def __init__(self,year,month,day):
         #self['set']('year',year)
@@ -172,26 +237,42 @@ def make_calentry_class():
                 print("there is already task on this time")
                 return
         self['get']('tasks')[time]=task
-    return make_class(locals(), Date)
-#Date = make_date_class()
+    
+    return make_class('make_calentry_class',locals(), [Date])
+# -----------------------------------------------------------
+Date = make_date_class()
 
-#today=Date['new'](2017,1,20)
-#print( today['get']('year'))
-#CalendarEntry = make_calentry_class()
-#todo = CalendarEntry['new'](2017, 1, 20) 
-#Time = make_time_class()
-#t = Time['new'](10,0) 
-#print( t['get']('__str__')() )
-#todo['get']('addTask')('PPL lecture', t, Time['new'](13,0)) 
-#todo['get']('addTask')('PPL homework#4', Time['new'](14,0), Time['new'](16,0)) 
-#print( todo['get']('tasks'))
+today=Date['new'](2017,1,20)
+print( today['get']('year'))
+CalendarEntry = make_calentry_class()
+todo = CalendarEntry['new'](2017, 1, 20)
+
+#print(CalendarEntry['get']('BaseCount'))
+Time = make_time_class()
+t = Time['new'](10,0) 
+print( t['get']('__str__')() )
+todo['get']('addTask')('PPL lecture', t, Time['new'](13,0)) 
+todo['get']('addTask')('PPL homework#4', Time['new'](14,0), Time['new'](16,0)) 
+print( todo['get']('tasks'))
+
+
 #===============================================#
 
                 # task 3
 
 #===============================================#
 rates ={('dollar', 'nis'): 3.47,('euro','nis'): 3.88,('euro','dollar'):1.12,('dollar','euro'):0.90 ,('nis','dollar'):0.29,('nis','euro'):0.26}
+def add(z1,z2):
+    y=z1.amount()
+    x=z2.amount()
+    #print(x+y)
+    return x+y
 
+def sub (z1,z2):
+   
+    y=z1.amount()
+    x=z2.amount()
+    return y-x
 class Shekel():
     def __init__(self,am):
         self.amount=am
@@ -231,6 +312,16 @@ class Euro ():
         if type(other) == Shekel:
             return  self.amount()+other.amount
         return self.amount() +other.amount()
+    
+#s = Shekel(50)
+#d = Dollar(50)
+#e = Euro(50)
+#print( d.amount() )
+#print(e.amount())
+#print(d + s)
+#print(add(e, d))
+#z=eval(repr(d)) 
+#print(z)
 #===============================================#
 
                 # task 4
@@ -246,7 +337,7 @@ def add_dollar_euro(dol,eur):
     return dol.amount()+eur.amount()
 add_euro_dollar=lambda x,y:add_dollar_euro(y,x)
 
-                    
+           
 def sub_shekel_dollar(sh,dol):
     return sh.amount-dol.amount() 
 sub_dollar_shekel=lambda x,y: -sub_shekel_dollar(y,x)
@@ -288,7 +379,7 @@ apply.implementations={('add',('nis','dollar')):lambda x,y: add_shekel_dollar(x,
                        ('sub',('euro','euro')):lambda x,y:x.euro-y.euro}           
 #print(apply('add', Shekel(50), Dollar(20)))
 
-rates[('euro','dollar')] = 1.06
+#rates[('euro','dollar')] = 1.06
 #print(apply('add', Dollar(50), Euro(20)))
 #print(apply('sub', Dollar(50), Euro(20)))
 #===============================================#
@@ -426,7 +517,7 @@ def parking(payForHour,numRegPla,numPriorPla,numVIPPla):
             
     return {'print_list':print_list, 'print_parking':print_parking, 'next_time':next_time,'start_parking':start_parking,'end_parking':end_parking}
 
-#park1=parking(10,3,3,3) 
+#park1=parking(-10,3,3,3) 
 #print( park1 )
 #park1['start_parking']('aaa','Regular') 
 #park1['start_parking'](223,'VIP1')
