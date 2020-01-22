@@ -41,9 +41,7 @@ class CalendarEntry(Date):
         #start_str,end_str=str(start),str(end)
         #self.tasks.__setitem__((start_str,end_str),task)
     def __str__(self):
-        
         count=1
-        
         string= 'To do list for {0}:\n'.format(Date.__str__(self))
         list = sorted(self.tasks.items(),key=itemgetter(0))
         for x in list:
@@ -70,15 +68,6 @@ class CalendarEntry(Date):
                 # task 2
 
 #===============================================#    
-
-
-
-
-
-
-
-
-
 
 def make_class(name, attrs, base=None):
     
@@ -156,7 +145,9 @@ def make_class(name, attrs, base=None):
             
         raise AttributeError('Attribute {0} is not defined for {1}'.format(name, attrs['name']))
 # ========================================================
-    def set(name, value): attrs[name] = value
+    def set(name, value):
+        
+        attrs[name] = value
 # ========================================================
     def new(*args):
         def get(name):
@@ -187,7 +178,7 @@ def make_class(name, attrs, base=None):
         # type class
         return obj
 
-    cls = { 'get': get, 'set': set, 'new': new }
+    cls = { 'get': get, 'set': set, 'new': new ,'__name__':name}
     'count amount of base class'
     if not base: count=0
     else: count = len(base)
@@ -198,7 +189,7 @@ def make_class(name, attrs, base=None):
     #       or: cls['set']('name', name)
     ##count amount of base class
     ##add name of class'
-    attrs['name'] = name
+    #attrs['name'] = name
     ##add name of class'
     cls['set']('ancestry', ancestry)
     
@@ -241,19 +232,16 @@ def make_calentry_class():
     return make_class('make_calentry_class',locals(), [Date])
 # -----------------------------------------------------------
 Date = make_date_class()
-
 today=Date['new'](2017,1,20)
-print( today['get']('year'))
+print( today['get']('name'))
 CalendarEntry = make_calentry_class()
 todo = CalendarEntry['new'](2017, 1, 20)
-
-#print(CalendarEntry['get']('BaseCount'))
 Time = make_time_class()
 t = Time['new'](10,0) 
-print( t['get']('__str__')() )
-todo['get']('addTask')('PPL lecture', t, Time['new'](13,0)) 
-todo['get']('addTask')('PPL homework#4', Time['new'](14,0), Time['new'](16,0)) 
-print( todo['get']('tasks'))
+#print( t['get']('__str__')() )
+#todo['get']('addTask')('PPL lecture', t, Time['new'](13,0)) 
+#todo['get']('addTask')('PPL homework#4', Time['new'](14,0), Time['new'](16,0)) 
+#print( todo['get']('tasks'))
 
 
 #===============================================#
@@ -378,7 +366,6 @@ apply.implementations={('add',('nis','dollar')):lambda x,y: add_shekel_dollar(x,
                        ('sub',('euro','dollar')):lambda x,y:x.euro - y.dollar/rates[('euro','dollar')], 
                        ('sub',('euro','euro')):lambda x,y:x.euro-y.euro}           
 #print(apply('add', Shekel(50), Dollar(20)))
-
 #rates[('euro','dollar')] = 1.06
 #print(apply('add', Dollar(50), Euro(20)))
 #print(apply('sub', Dollar(50), Euro(20)))
@@ -579,14 +566,14 @@ def repl():
         try:
             expression_tree = calc_parse(input('calc> '))                    
             print(calc_eval(expression_tree))
-        #### new errors: ValueError, ArithmeticError ####
+
         except (SyntaxError, TypeError, ValueError, ArithmeticError) as err:
             print(type(err).__name__ + ':', err)
-        except (KeyboardInterrupt, EOFError):  # <Control>-D, etc. <ctrl-C>
+        except (KeyboardInterrupt, EOFError):  
             print('Calculation completed.')
             return
 
-## Eval & Apply
+
 
 class Exp(object):
     def __init__(self, operator, operands):
@@ -606,7 +593,6 @@ def calc_eval(exp):
     if type(exp) == Exp:
         arguments = list(map(calc_eval, exp.operands))
         return calc_apply(exp.operator, arguments)
-    ##### sequence ###
     if type(exp) == list:
           return list(map(calc_eval, exp))
     
@@ -620,34 +606,27 @@ def calc_apply(operator, args):
             return -args[0]
         return sum(args[:1] + [-arg for arg in args[1:]])
     if operator in ('mul', '*'):
-        #new test
+        '''add new test'''
         if len(args) == 0:
             raise TypeError(operator + 'requires at least 1 argument')
         return reduce(mul, args, 1)
     if operator in ('div', '/'):
         if len(args) != 2:
             raise TypeError(operator + ' requires exactly 2 arguments')
-        #numer, denom = args
-        #returns infinite if denominator = 0
-####        if denom == 0: return float("inf")
-####        return float(numer)/denom
-        #OR:
         try:
                 return args[0]/args[1]
         except ZeroDivisionError as s:
                 return float("inf")
-    #### new operator - round ####
+    '''add new operator'''
     if operator == 'round':
         if len(args) != 2:
             raise TypeError(operator + ' requires exactly 2 arguments')
         base, prec = args
         return round(base, prec)
     
-### Parsing
-
 def calc_parse(line):
     tokens = tokenize(line)
-    #### sequence of commands ####
+    '''command'''
     if ';' in tokens:
         result = []
         while ';' in tokens:
@@ -655,18 +634,18 @@ def calc_parse(line):
             result.append(analyze(token))
             tokens = tokens[tokens.index(';')+1:]
     else:
-    ##############################
+   
             result = analyze(tokens)
     if len(tokens) > 0:
         raise SyntaxError('Extra token(s): ' + ' '.join(tokens))
     return result
 
 def tokenize(line):
-    #### add token ';' ###
+    '''add token'''
     spaced = line.replace('(',' ( ').replace(')',' ) ').replace(',', ' , ').replace(';',' ; ')
     return spaced.strip().split()
 
-###new operator: 'round'
+'''new operator'''
 known_operators = ['round', 'add', 'sub', 'mul', 'div', 'pow', 'sqrt', '+', '-', '*', '/', '^', 'V']
 
 def analyze(tokens):
@@ -689,7 +668,7 @@ def analyze_operands(tokens):
             raise SyntaxError('expected ,')
         operands.append(analyze(tokens))
         assert_non_empty(tokens)
-    tokens.pop(0)  # Remove )
+    tokens.pop(0) 
     return operands
 
 def assert_non_empty(tokens):
